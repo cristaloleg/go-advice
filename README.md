@@ -18,3 +18,4 @@
     }
 }()
 ```
+- [ ] multiple if statements can be collapsed into switch
