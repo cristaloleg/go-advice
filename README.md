@@ -25,3 +25,4 @@
   ```
 - [ ] use `chan struct{}` to pass signal
   - `chan bool` makes it less clear, btw `struct{}` is more optimal
+- [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
