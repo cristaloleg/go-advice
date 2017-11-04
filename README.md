@@ -4,7 +4,8 @@
   - make everyone happier
 - [ ] do not omit `defer`
   - 200ns speedup is neglecatble in a most cases
-- [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
+- [ ] dump goroutines
+  - https://stackoverflow.com/a/27398062/433041
 ```go
   go func() {
     sigs := make(chan os.Signal, 1)
