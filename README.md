@@ -19,3 +19,7 @@
 }()
 ```
 - [ ] multiple if statements can be collapsed into switch
+- [ ] check interface implementation during compilation
+  ```go
+    var _ io.Reader = (*MyFastReader)(nil)
+  ```
