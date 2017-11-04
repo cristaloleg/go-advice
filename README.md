@@ -23,3 +23,5 @@
   ```go
     var _ io.Reader = (*MyFastReader)(nil)
   ```
+- [ ] use `chan struct{}` to pass signal
+  - `chan bool` makes it less clear, btw `struct{}` is more optimal
