@@ -31,3 +31,4 @@
     t.Skip("this doesn't work under ARM")
   }
   ```
+- [ ] prefer `30 * time.Seconds` instead of `time.Duration(30) * time.Seconds`
