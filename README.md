@@ -26,3 +26,9 @@
 - [ ] use `chan struct{}` to pass signal
   - `chan bool` makes it less clear, btw `struct{}` is more optimal
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
+- [ ] skip test deppending on architecture
+  ```go
+  if runtime.GOARM == "arm" {
+    t.Skip("this doesn't work under ARM")
+  }
+  ```
