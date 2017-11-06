@@ -32,3 +32,16 @@
   }
   ```
 - [ ] prefer `30 * time.Seconds` instead of `time.Duration(30) * time.Seconds`
+- [ ] always wrap for-select idiom to a function
+  ```go
+    func run() {
+      for {
+        select {
+          case ...:
+            ...
+          default:
+            ...
+        }
+      }
+    }
+  ```
