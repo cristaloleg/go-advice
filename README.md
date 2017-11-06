@@ -34,3 +34,12 @@
 - [ ] prefer `30 * time.Seconds` instead of `time.Duration(30) * time.Seconds`
 - [ ] always wrap for-select idiom to a function
 - [ ] implement `Stringer` interface for integers const values
+- [ ] filtering without allocating
+  ```go
+    b := a[:0]
+    for _, x := range a {
+    	if f(x) {
+		    b = append(b, x)
+    	}
+    }
+  ```
