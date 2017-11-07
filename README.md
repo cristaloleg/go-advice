@@ -43,3 +43,5 @@
     	}
     }
   ```
+- [ ] run `go format` on CI and compare diff
+  - this will ensure that everything was generated and commited
