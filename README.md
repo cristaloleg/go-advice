@@ -45,3 +45,5 @@
   ```
 - [ ] run `go format` on CI and compare diff
   - this will ensure that everything was generated and commited
+- [ ] if a param of len is nil then it's zero
+  - https://golang.org/pkg/builtin/#len
