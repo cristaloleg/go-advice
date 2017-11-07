@@ -47,3 +47,13 @@
   - this will ensure that everything was generated and commited
 - [ ] if a param of len is nil then it's zero
   - https://golang.org/pkg/builtin/#len
+- [ ] anonymous structs are cool
+  ```go
+  var hits struct {
+    sync.Mutex
+    n int
+  }
+  hits.Lock()
+  hits.n++
+  hits.Unlock()
+  ```
