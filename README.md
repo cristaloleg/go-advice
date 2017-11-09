@@ -1,4 +1,4 @@
-# go-advices [![ghit.me](https://ghit.me/badge.svg?repo=cristaloleg/go-advices)](https://ghit.me/repo/cristaloleg/go-advices)
+# go-advices
 
 - [ ] go fmt your code
   - make everyone happier
