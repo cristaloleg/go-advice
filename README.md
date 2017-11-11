@@ -59,3 +59,5 @@
   ```
 - [ ] `time.Time` has pointer field `time.Location` and this is bad go GC
   - it's relevant only for big number of `time.Time`, use timestamp instead
+- [ ] always close http body aka `defer r.Body.Close()`
+  - unless you need leaked goroutine
