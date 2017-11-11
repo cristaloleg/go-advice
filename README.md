@@ -61,3 +61,5 @@
   - it's relevant only for big number of `time.Time`, use timestamp instead
 - [ ] always close http body aka `defer r.Body.Close()`
   - unless you need leaked goroutine
+- [ ] `httputil.DumpRequest` is very useful thing
+  - https://godoc.org/net/http/httputil#DumpRequest
