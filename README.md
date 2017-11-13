@@ -63,3 +63,11 @@
   - unless you need leaked goroutine
 - [ ] `httputil.DumpRequest` is very useful thing
   - https://godoc.org/net/http/httputil#DumpRequest
+- [ ] `go test -short` allows to reduce set of tests to be runned
+  ```go
+  func TestSomething(t *testing.T) {
+  	if testing.Short() {
+		t.Skip("skipping test in short mode.")
+	}
+  }
+  ```
