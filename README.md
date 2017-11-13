@@ -72,3 +72,4 @@
   }
   ```
 - [ ] check if there are mistakes in code formatting `diff -u <(echo -n) <(gofmt -d .)`
+- [ ] group `const` declarations by type and `var` by logic and/or type
