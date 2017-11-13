@@ -73,3 +73,5 @@
   ```
 - [ ] check if there are mistakes in code formatting `diff -u <(echo -n) <(gofmt -d .)`
 - [ ] group `const` declarations by type and `var` by logic and/or type
+- [ ] to run Travis-CI with the latest Go use `travis 1`
+  - see more: https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
