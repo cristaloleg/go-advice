@@ -66,8 +66,8 @@
 - [ ] `go test -short` allows to reduce set of tests to be runned
   ```go
   func TestSomething(t *testing.T) {
-  	if testing.Short() {
-		t.Skip("skipping test in short mode.")
-	}
+    if testing.Short() {
+      t.Skip("skipping test in short mode.")
+    }
   }
   ```
