@@ -77,3 +77,4 @@
   - see more: https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
 - [ ] easy way to split test into different builds
   - use `// +build integration` and run them with `go test -v --tags integration .`
+- [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
