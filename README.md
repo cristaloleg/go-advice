@@ -61,6 +61,8 @@
   - it's relevant only for big number of `time.Time`, use timestamp instead
 - [ ] always close http body aka `defer r.Body.Close()`
   - unless you need leaked goroutine
+- [ ] always discard body e.g. `io.Copy(ioutil.Discard, resp.Body)` if you don't use it
+  - HTTP client's Transport will not reuse connections unless the body is read to completion and closed
 - [ ] `httputil.DumpRequest` is very useful thing
   - https://godoc.org/net/http/httputil#DumpRequest
 - [ ] `go test -short` allows to reduce set of tests to be runned
