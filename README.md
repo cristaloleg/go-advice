@@ -80,3 +80,5 @@
 - [ ] easy way to split test into different builds
   - use `// +build integration` and run them with `go test -v --tags integration .`
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
+- [ ] prefer `regexp.MustCompile` instead of `regexp.Compile`
+  - in most cases your regex is immutable, so init it in `func init`
