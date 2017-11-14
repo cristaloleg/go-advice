@@ -84,3 +84,4 @@
   - in most cases your regex is immutable, so init it in `func init`
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't user flags, mutexes, channels or atomics
+- [ ] every blocking or IO function call should be cancelable or at least timeoutable
