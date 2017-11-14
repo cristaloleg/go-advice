@@ -82,3 +82,5 @@
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
 - [ ] prefer `regexp.MustCompile` instead of `regexp.Compile`
   - in most cases your regex is immutable, so init it in `func init`
+- [ ] best candidate to make something once in a thread-safe way is `sync.Once`
+  - don't user flags, mutexes, channels or atomics
