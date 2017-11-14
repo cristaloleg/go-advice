@@ -63,6 +63,11 @@
   - unless you need leaked goroutine
 - [ ] always discard body e.g. `io.Copy(ioutil.Discard, resp.Body)` if you don't use it
   - HTTP client's Transport will not reuse connections unless the body is read to completion and closed
+  ```go
+    res, _ := client.Do(req)
+    io.Copy(ioutil.Discard, res.Body)
+    defer res.Body.Close()
+  ```
 - [ ] `httputil.DumpRequest` is very useful thing
   - https://godoc.org/net/http/httputil#DumpRequest
 - [ ] `go test -short` allows to reduce set of tests to be runned
