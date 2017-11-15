@@ -90,3 +90,6 @@
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't user flags, mutexes, channels or atomics
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
+- [ ] do not overuse `fmt.Sprintf` in your hot path. It is costly due to maintaining the buffer pool and dynamic dispatches for interfaces.
+  - if you are doing `fmt.Sprintf("%s%s", var1, var2)`, consider simple string concatenation.
+  - if you are doing `fmt.Sprintf("%x", var)`, consider using `hex.EncodeToString` or `strconv.FormatInt(var, 16)`
