@@ -29,6 +29,7 @@
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't user flags, mutexes, channels or atomics
+- [ ] to block forever use `select{}`, omit channels, waiting for a signal
 
 ### Performance
 - [ ] do not omit `defer`
