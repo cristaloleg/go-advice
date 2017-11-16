@@ -10,7 +10,15 @@
 - [ ] group `const` declarations by type and `var` by logic and/or type
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
 - [ ] implement `Stringer` interface for integers const values
-
+- [ ] check your defer's error
+  ```go
+  defer func() {
+      err := ocp.Close()
+      if err != nil {
+          rerr = err
+      }
+  }()
+  ```
 ### CI
 - [ ] run `go format` on CI and compare diff
   - this will ensure that everything was generated and commited
