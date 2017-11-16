@@ -19,6 +19,8 @@
       }
   }()
   ```
+- [ ] don't use `checkErr` function which panics or does `os.Exit`
+
 ### CI
 - [ ] run `go format` on CI and compare diff
   - this will ensure that everything was generated and commited
