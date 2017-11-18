@@ -20,6 +20,8 @@
   }()
   ```
 - [ ] don't use `checkErr` function which panics or does `os.Exit`
+- [ ] don't use alias for enums 'cause this breaks type safety
+  - https://play.golang.org/p/MGbeDwtXN3
 
 ### CI
 - [ ] run `go format` on CI and compare diff
