@@ -84,6 +84,7 @@
     t.Skip("this doesn't work under ARM")
   }
   ```
+- [ ] prefer `package_test` name for tests, rather than `package`
 
 ### Tools
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
