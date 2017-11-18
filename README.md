@@ -91,6 +91,9 @@
   - https://godoc.org/golang.org/x/tools/cmd/benchcmp
 ### Tools
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
+- [ ] `go list` allows to find all direct and transitive dependencies
+  - `go list -f '{{ .Imports }}' package`
+  - `go list -f '{{ .Deps }}' package`
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
