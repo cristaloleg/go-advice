@@ -63,7 +63,7 @@
     io.Copy(ioutil.Discard, res.Body)
     defer res.Body.Close()
   ```
-- [ ] don't user defer in a loop or you'll get a small memory leak
+- [ ] don't use defer in a loop or you'll get a small memory leak
   - 'cause defers will grow your stack without the reason
 
 ### Build
