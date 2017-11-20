@@ -22,6 +22,19 @@
 - [ ] don't use `checkErr` function which panics or does `os.Exit`
 - [ ] don't use alias for enums 'cause this breaks type safety
   - https://play.golang.org/p/MGbeDwtXN3
+  - 
+  ```go
+  package main
+  type Status = int
+  type Format = int // remove `=` to have type safety
+  
+  const A Status = 1
+  const B Format = 1
+  
+  func main() {
+	println(A == B)
+  }
+  ```
 
 ### CI
 - [ ] run `go format` on CI and compare diff
