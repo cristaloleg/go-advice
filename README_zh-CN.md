@@ -90,7 +90,7 @@
   - 加上注释`// +build integration`, 运行测试时:`go test -v --tags integration .`
 
 ### Testing 测试
-- [ ] `go test -short` 可以减少一些测试 !(控制调试粒度)
+- [ ] `go test -short` 可以减少一些测试 !(控制测试粒度)
   ```go
   func TestSomething(t *testing.T) {
     if testing.Short() {
