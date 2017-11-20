@@ -75,7 +75,7 @@
     !([参考](https://sheepbao.github.io/post/golang_string_connect_performance/))
   - 与其`fmt.Sprintf("%x", var)`, 不如`hex.EncodeToString`或`strconv.FormatInt(var, 16)`
 - [ ] 像这样弃用body之类的东西: `io.Copy(ioutil.Discard, resp.Body)` 如果不这么做...
-  - HTTP客户端传输不会重用连接数, 直到body被读取完和关闭
+  - HTTP客户端传输不会重用这些连接, 直到body被读取完和关闭
   ```go
     res, _ := client.Do(req)
     io.Copy(ioutil.Discard, res.Body)
