@@ -1,11 +1,13 @@
 # Go-advices
+译者: 自己可能水平还不到家, 欢迎大家批评指正.
+碰到这些: !() 是我的注释
 
 ### Code 代码
 - [ ] `go fmt`你的代码, 大家都开心
 - [ ] 多重`if`语句可以折叠成`switch`
 - [ ] 使用空结构`chan struct{}`传递信号
   - `chan bool`稍显不清晰, `struct{}`更合适
-- [ ] 使用`30 * time.Seconds`, 而不是`time.Duration(30) * time.Seconds`
+- [ ] 用`30 * time.Seconds`, 而不是`time.Duration(30) * time.Seconds`
 - [ ] 将for-select包装成函数
 - [ ] 按照类型组织`const`声明, 按照 逻辑 和/或 类型 组织`var`声明
 - [ ] 所有阻塞或者IO的函数调用都应该能被取消或者有超时(timeout)检测
@@ -33,7 +35,7 @@
   
   func main() {
     println(A == B) // true 不是我们想要的
-    // 我们希望能在编译时就找出A B两者不是一个类型的错误
+    // 我们希望能在编译时就找出AB两者不是一个类型的错误
   }
   ```
 
@@ -68,7 +70,8 @@
 - [ ] `regexp.MustCompile`比`regexp.Compile`更好
   - 在大多数例子中正则是需要一直存在的, 所以在`func init`中初始化
 - [ ] 在经常运行的代码上不要过分使用`fmt.Sprintf`. 这样开销很大, 因为需要维护缓存池(buffer pool)并动态分派接口
-  - 与其`fmt.Sprintf("%s%s", var1, var2)`, 考虑使用简单的字符串连接`+`.
+  - 与其`fmt.Sprintf("%s%s", var1, var2)`, 不如考虑使用简单的字符串连接`+`.
+    !([参考](https://sheepbao.github.io/post/golang_string_connect_performance/))
   - 与其`fmt.Sprintf("%x", var)`, 不如`hex.EncodeToString`或`strconv.FormatInt(var, 16)`
 - [ ] 像这样弃用body之类的东西: `io.Copy(ioutil.Discard, resp.Body)` 如果不这么做...
   - HTTP客户端传输不会重用连接数, 直到body被读取完和关闭
