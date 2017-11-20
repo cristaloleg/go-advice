@@ -49,7 +49,7 @@
     	}
     }
   ```
-- [ ] `time.Time` has pointer field `time.Location` and this is bad go GC
+- [ ] `time.Time` has pointer field `time.Location` and this is bad for go GC
   - it's relevant only for big number of `time.Time`, use timestamp instead
 - [ ] prefer `regexp.MustCompile` instead of `regexp.Compile`
   - in most cases your regex is immutable, so init it in `func init`
