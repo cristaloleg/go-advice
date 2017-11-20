@@ -32,7 +32,7 @@
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
-  - don't user flags, mutexes, channels or atomics
+  - don't use flags, mutexes, channels or atomics
 - [ ] to block forever use `select{}`, omit channels, waiting for a signal
 
 ### Performance
@@ -49,7 +49,7 @@
     	}
     }
   ```
-- [ ] `time.Time` has pointer field `time.Location` and this is bad go GC
+- [ ] `time.Time` has pointer field `time.Location` and this is bad for go GC
   - it's relevant only for big number of `time.Time`, use timestamp instead
 - [ ] prefer `regexp.MustCompile` instead of `regexp.Compile`
   - in most cases your regex is immutable, so init it in `func init`
@@ -63,7 +63,7 @@
     io.Copy(ioutil.Discard, res.Body)
     defer res.Body.Close()
   ```
-- [ ] don't user defer in a loop or you'll get a small memory leak
+- [ ] don't use defer in a loop or you'll get a small memory leak
   - 'cause defers will grow your stack without the reason
 
 ### Build
@@ -89,6 +89,7 @@
 - [ ] prefer `package_test` name for tests, rather than `package`
 - [ ] for fast benchmark comparison we've a `benchcmp` tool
   - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+
 ### Tools
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
 - [ ] `go list` allows to find all direct and transitive dependencies
