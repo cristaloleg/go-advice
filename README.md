@@ -81,6 +81,11 @@
   ```
 - [ ] don't use defer in a loop or you'll get a small memory leak
   - 'cause defers will grow your stack without the reason
+- [ ] don't forget to stop ticker, unless you need leaked channel
+  ```go
+  ticker := time.NewTicker(1 * time.Second)
+  defer ticker.Stop()
+  ```
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
