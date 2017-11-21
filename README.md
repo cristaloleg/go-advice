@@ -35,6 +35,8 @@
 	println(A == B)
   }
   ```
+- [ ] if you're going to omit returning params, do it explicitly
+  - so prefer this ` _ = f()` to this `f()`
 
 ### CI
 - [ ] run `go format` on CI and compare diff
