@@ -5,7 +5,7 @@
 - [ ] multiple if statements can be collapsed into switch
 - [ ] use `chan struct{}` to pass signal
   - `chan bool` makes it less clear, btw `struct{}` is more optimal
-- [ ] prefer `30 * time.Seconds` instead of `time.Duration(30) * time.Seconds`
+- [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
 - [ ] always wrap for-select idiom to a function
 - [ ] group `const` declarations by type and `var` by logic and/or type
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
