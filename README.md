@@ -5,7 +5,7 @@
 - [ ] multiple if statements can be collapsed into switch
 - [ ] use `chan struct{}` to pass signal
   - `chan bool` makes it less clear, btw `struct{}` is more optimal
-- [ ] prefer `30 * time.Seconds` instead of `time.Duration(30) * time.Seconds`
+- [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
 - [ ] always wrap for-select idiom to a function
 - [ ] group `const` declarations by type and `var` by logic and/or type
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
@@ -35,6 +35,9 @@
 	println(A == B)
   }
   ```
+- [ ] if you're going to omit returning params, do it explicitly
+  - so prefer this ` _ = f()` to this `f()`
+- [ ] we've a short form for slice initialization `a := []T{}`
 
 ### CI
 - [ ] run `go format` on CI and compare diff
@@ -78,6 +81,11 @@
   ```
 - [ ] don't use defer in a loop or you'll get a small memory leak
   - 'cause defers will grow your stack without the reason
+- [ ] don't forget to stop ticker, unless you need leaked channel
+  ```go
+  ticker := time.NewTicker(1 * time.Second)
+  defer ticker.Stop()
+  ```
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
