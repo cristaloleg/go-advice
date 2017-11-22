@@ -124,20 +124,20 @@
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
   ```go
-    go func() {
-      sigs := make(chan os.Signal, 1)
-      signal.Notify(sigs, syscall.SIGQUIT)
-      buf := make([]byte, 1<<20)
-      for {
-          <-sigs
-          stacklen := runtime.Stack(buf, true)
-          log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
-      }
+  go func() {
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGQUIT)
+    buf := make([]byte, 1<<20)
+    for {
+      <-sigs
+      stacklen := runtime.Stack(buf, true)
+      log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
+    }
   }()
   ```
 - [ ] check interface implementation during compilation
   ```go
-    var _ io.Reader = (*MyFastReader)(nil)
+  var _ io.Reader = (*MyFastReader)(nil)
   ```
 - [ ] if a param of len is nil then it's zero
   - https://golang.org/pkg/builtin/#len
