@@ -38,6 +38,8 @@
 - [ ] if you're going to omit returning params, do it explicitly
   - so prefer this ` _ = f()` to this `f()`
 - [ ] we've a short form for slice initialization `a := []T{}`
+- [ ] iterate over arra or slice using range loop
+  -  instead of `for i := 3; i < 7; i++ {...}` prefer `for _, c := range a[3:7] {...}`
 
 ### CI
 - [ ] run `go format` on CI and compare diff
