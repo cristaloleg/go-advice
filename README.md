@@ -112,6 +112,8 @@
 - [ ] prefer `package_test` name for tests, rather than `package`
 - [ ] for fast benchmark comparison we've a `benchcmp` tool
   - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+- [ ] track your allocations with `testing.AllocsPerRun`
+  - https://godoc.org/testing#AllocsPerRun
 
 ### Tools
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
