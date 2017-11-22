@@ -8,7 +8,7 @@
 - [ ] 多重`if`语句可以折叠成`switch`
 - [ ] 使用空结构`chan struct{}`传递信号
   - `chan bool`稍显不清晰, `struct{}`更合适
-- [ ] 用`30 * time.Seconds`, 而不是`time.Duration(30) * time.Seconds`
+- [ ] 用`30 * time.Second`, 而不是`time.Duration(30) * time.Second`
 - [ ] 将for-select包装成函数
 - [ ] 按照类型组织`const`声明, 按照 逻辑 和/或 类型 组织`var`声明
 - [ ] 所有阻塞或者IO的函数调用都应该能被取消或者有超时(timeout)检测
@@ -39,6 +39,9 @@
     // 我们希望能在编译时就找出AB两者不是一个类型的错误
   }
   ```
+- [ ] 如果你要省略返回值, 做的明确些
+  - 所以` _ = f()`好过`f()`
+- [ ] 我们可以简化切片的初始化`a := []T{}`
 
 ### CI 可持续集成
 - [ ] 在CI上运行`go format`, 然后比较不同
@@ -83,6 +86,11 @@
   ```
 - [ ] 不要在循环中使用defer, 不然会造成内存泄漏
   - 因为defer会不明地增加栈
+- [ ] 别忘了停掉ticker, 除非你想channel溢出
+  ```go
+  ticker := time.NewTicker(1 * time.Second)
+  defer ticker.Stop()
+  ```
 
 ### Build 构建
 - [ ] 为二进制文件瘦身`go build -ldflags="-s -w" ...` !(去除调试信息和符号表)
