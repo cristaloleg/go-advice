@@ -154,3 +154,4 @@
   ```
 - [ ] `httputil.DumpRequest` is very useful thing, don't create your own
   - https://godoc.org/net/http/httputil#DumpRequest
+- [ ] to get call stack we've `runtime.Caller` https://golang.org/pkg/runtime/#Caller
