@@ -42,6 +42,9 @@
 - [ ] 如果你要省略返回值, 做的明确些
   - 所以` _ = f()`好过`f()`
 - [ ] 我们可以简化切片的初始化`a := []T{}`
+- [ ] 数组或切片的遍历用`range`
+  - 与其这么写`for i := 3; i < 7; i++ {...}`, 不如这么写`for _, c := range a[3:7] {...}`
+- [ ] 多行`string`用反引号(\`)
 
 ### CI 可持续集成
 - [ ] 在CI上运行`go format`, 然后比较不同
@@ -115,6 +118,8 @@
 - [ ] 类似`package_test`为测试命名, 比`package`更好
 - [ ] 为快速比较benchmark, 我们有工具`benchcmp`
   - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+- [ ] 追踪内存分配状态: `testing.AllocsPerRun`
+  - https://godoc.org/testing#AllocsPerRun
 
 ### Tools 工具
 - [ ] 快速替换 `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
@@ -125,20 +130,20 @@
 ### Misc 杂项
 - [ ] 转存(dump)goroutine https://stackoverflow.com/a/27398062/433041
   ```go
-    go func() {
-      sigs := make(chan os.Signal, 1)
-      signal.Notify(sigs, syscall.SIGQUIT)
-      buf := make([]byte, 1<<20)
-      for {
-          <-sigs
-          stacklen := runtime.Stack(buf, true)
-          log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
-      }
+  go func() {
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGQUIT)
+    buf := make([]byte, 1<<20)
+    for {
+      <-sigs
+      stacklen := runtime.Stack(buf, true)
+      log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
+    }
   }()
   ```
 - [ ] 编译时检查接口的实现
   ```go
-    var _ io.Reader = (*MyFastReader)(nil) // 声明一个要测试的接口给_
+  var _ io.Reader = (*MyFastReader)(nil) // 声明一个要测试的接口给_
   ```
 - [ ] `len()`的参数是nil, 则值为0
   - https://golang.org/pkg/builtin/#len
@@ -154,3 +159,4 @@
   ```
 - [ ] `httputil.DumpRequest`很有用, 不用重复造轮子
   - https://godoc.org/net/http/httputil#DumpRequest
+- [ ] 获取堆栈调用: `runtime.Caller` https://golang.org/pkg/runtime/#Caller
