@@ -38,6 +38,9 @@
 - [ ] if you're going to omit returning params, do it explicitly
   - so prefer this ` _ = f()` to this `f()`
 - [ ] we've a short form for slice initialization `a := []T{}`
+- [ ] iterate over array or slice using range loop
+  -  instead of `for i := 3; i < 7; i++ {...}` prefer `for _, c := range a[3:7] {...}`
+- [ ] use backquote(\`) for multiline strings
 
 ### CI
 - [ ] run `go format` on CI and compare diff
@@ -110,6 +113,8 @@
 - [ ] prefer `package_test` name for tests, rather than `package`
 - [ ] for fast benchmark comparison we've a `benchcmp` tool
   - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+- [ ] track your allocations with `testing.AllocsPerRun`
+  - https://godoc.org/testing#AllocsPerRun
 
 ### Tools
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
@@ -120,20 +125,20 @@
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
   ```go
-    go func() {
-      sigs := make(chan os.Signal, 1)
-      signal.Notify(sigs, syscall.SIGQUIT)
-      buf := make([]byte, 1<<20)
-      for {
-          <-sigs
-          stacklen := runtime.Stack(buf, true)
-          log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
-      }
+  go func() {
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGQUIT)
+    buf := make([]byte, 1<<20)
+    for {
+      <-sigs
+      stacklen := runtime.Stack(buf, true)
+      log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
+    }
   }()
   ```
 - [ ] check interface implementation during compilation
   ```go
-    var _ io.Reader = (*MyFastReader)(nil)
+  var _ io.Reader = (*MyFastReader)(nil)
   ```
 - [ ] if a param of len is nil then it's zero
   - https://golang.org/pkg/builtin/#len
@@ -149,3 +154,4 @@
   ```
 - [ ] `httputil.DumpRequest` is very useful thing, don't create your own
   - https://godoc.org/net/http/httputil#DumpRequest
+- [ ] to get call stack we've `runtime.Caller` https://golang.org/pkg/runtime/#Caller
