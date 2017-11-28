@@ -1,4 +1,4 @@
-# Go-建议 #
+# Go-adivces 中文版本 #
 
 ### 代码 ###
 
@@ -52,7 +52,7 @@ println(A == B)
 
 - [ ] 多行字符串用反引号(\`)
 
-### 持续集成（CI） ###
+### 持续集成 ###
 
 - [ ] run go format on CI and compare diff
   
@@ -64,7 +64,7 @@ println(A == B)
 
 - [ ] 检查代码格式是否有错误 `diff -u <(echo -n) <(gofmt -d .)`
 
-### 并发（Concurrency） ###
+### 并发 ###
 
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
 
@@ -72,7 +72,7 @@ println(A == B)
 
 - [ ] 永远不要使用 `select{}`, 省略通道， 等待信号
 
-### 性能（Performance） ###
+### 性能 ###
 
 - [ ] 不要省略 `defer`
 
@@ -126,14 +126,14 @@ ticker := time.NewTicker(1 * time.Second)
 defer ticker.Stop()
 ```
 
-### 构建（Build） ###
+### 构建 ###
 
 - [ ] 用这个命令 `go build -ldflags="-s -w" ...` 去掉你的二进制文件
 - [ ] 拆分构建不同版本的简单方法
 
   - 用 `// +build integration` 并且运行他们 `go test -v --tags integration .`
 
-### 测试（Testing） ###
+### 测试 ###
 
 - [ ] `go test -short` 允许减少要运行的一组测试
 
@@ -162,7 +162,7 @@ if runtime.GOARM == "arm" {
 
     - https://godoc.org/testing#AllocsPerRun
 
-### 工具（Tools） ###
+### 工具 ###
 
 - [ ] 快速替换 `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
 - [ ] `go list` 允许找到所有直接和传递的依赖关系
@@ -170,7 +170,7 @@ if runtime.GOARM == "arm" {
     - `go list -f '{{ .Imports }}' package`
     - `go list -f '{{ .Deps }}' package`
 
-### （Misc） ###
+### Misc ###
 
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
 
