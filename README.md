@@ -5,6 +5,7 @@
 - [ ] multiple if statements can be collapsed into switch
 - [ ] use `chan struct{}` to pass signal
   - `chan bool` makes it less clear, btw `struct{}` is more optimal
+  - `chan struct{}` weights less, because `unsafe.Sizeof(SomeEmptyStruct) == 0`
 - [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
 - [ ] always wrap for-select idiom to a function
 - [ ] group `const` declarations by type and `var` by logic and/or type
@@ -20,6 +21,7 @@
   }()
   ```
 - [ ] don't use `checkErr` function which panics or does `os.Exit`
+- [ ] use panic only in very specific situations, you have to handle error
 - [ ] don't use alias for enums 'cause this breaks type safety
   - https://play.golang.org/p/MGbeDwtXN3
   - 
@@ -57,6 +59,7 @@
 ### Performance
 - [ ] do not omit `defer`
   - 200ns speedup is negligible in most cases
+  - defer also add some kilobytes to your program
 - [ ] always close http body aka `defer r.Body.Close()`
   - unless you need leaked goroutine
 - [ ] filtering without allocating
