@@ -100,11 +100,11 @@
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(fmt.Sprintf("\"%d\":%s", key, string(jsonValue)))
 		if !first {
 			buffer.WriteString(",")
 		}
 		first = false
+		buffer.WriteString(fmt.Sprintf("\"%d\":%s", key, string(jsonValue)))
 	}
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil
