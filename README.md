@@ -89,6 +89,27 @@
   ticker := time.NewTicker(1 * time.Second)
   defer ticker.Stop()
   ```
+- [ ] use custom marshaler to speed up marshaling
+  - but before using it - profile!
+  ```go
+  func (e Entry) MarshalJSON() ([]byte, error) {
+	buffer := bytes.NewBufferString("{")
+	first := true
+	for key, value := range this {
+		jsonValue, err := json.Marshal(value)
+		if err != nil {
+			return nil, err
+		}
+		buffer.WriteString(fmt.Sprintf("\"%d\":%s", key, string(jsonValue)))
+		if !first {
+			buffer.WriteString(",")
+		}
+		first = false
+	}
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
+  }
+  ```
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
@@ -155,3 +176,4 @@
 - [ ] `httputil.DumpRequest` is very useful thing, don't create your own
   - https://godoc.org/net/http/httputil#DumpRequest
 - [ ] to get call stack we've `runtime.Caller` https://golang.org/pkg/runtime/#Caller
+- [ ] to marshal arbitrary JSON you can marshal to `map[string]interface{}{}`
