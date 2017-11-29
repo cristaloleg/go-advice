@@ -90,12 +90,12 @@
   defer ticker.Stop()
   ```
 - [ ] use custom marshaler to speed up marshaling
-  - but before using it - profile!
+  - but before using it - profile! ex: https://play.golang.org/p/2wCV-ZsDjF
   ```go
-  func (e Entry) MarshalJSON() ([]byte, error) {
+  func (entry Entry) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 	first := true
-	for key, value := range this {
+	for key, value := range entry {
 		jsonValue, err := json.Marshal(value)
 		if err != nil {
 			return nil, err
@@ -104,7 +104,7 @@
 			buffer.WriteString(",")
 		}
 		first = false
-		buffer.WriteString(fmt.Sprintf("\"%d\":%s", key, string(jsonValue)))
+		buffer.WriteString(fmt.Sprintf("%s:%s", key, string(jsonValue)))
 	}
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil
