@@ -67,9 +67,9 @@
   ```go
     b := a[:0]
     for _, x := range a {
-    	if f(x) {
-		    b = append(b, x)  // slice机制有关
-    	}
+        if f(x) {
+            b = append(b, x)  // slice机制有关
+        }
     }
   ```
 - [ ] `time.Time`里面有个指针`time.Location`, 这对Go的垃圾回收(GC)不友好
@@ -83,9 +83,9 @@
 - [ ] 像这样弃用body之类的东西: `io.Copy(ioutil.Discard, resp.Body)` 如果不这么做...
   - HTTP客户端传输不会重用这些连接, 直到body被读取完和关闭
   ```go
-    res, _ := client.Do(req)
-    io.Copy(ioutil.Discard, res.Body)
-    defer res.Body.Close()
+  res, _ := client.Do(req)
+  io.Copy(ioutil.Discard, res.Body)
+  defer res.Body.Close()
   ```
 - [ ] 不要在循环中使用defer, 不然会造成内存泄漏
   - 因为defer会不明地增加栈
@@ -93,6 +93,27 @@
   ```go
   ticker := time.NewTicker(1 * time.Second)
   defer ticker.Stop()
+  ```
+- [ ] 使用定制的marshaler加快解析JSON的速度
+  - 但在使用之前 - 别忘了扫整个struct(profile)!
+  ```go 
+  func (e Entry) MarshalJSON() ([]byte, error) {
+      buffer := bytes.NewBufferString("{")
+      first := true
+      for key, value := range e {
+          jsonValue, err := json.Marshal(value)
+          if err != nil {
+              return nil, err
+          }
+          if !first {
+              buffer.WriteString(",")
+          }
+          first = false
+          buffer.WriteString(fmt.Sprintf("\"%d\":%s", key, string(jsonValue)))
+      }
+      buffer.WriteString("}")
+      return buffer.Bytes(), nil
+  }
   ```
 
 ### Build 构建
@@ -131,14 +152,14 @@
 - [ ] 转存(dump)goroutine https://stackoverflow.com/a/27398062/433041
   ```go
   go func() {
-    sigs := make(chan os.Signal, 1)
-    signal.Notify(sigs, syscall.SIGQUIT)
-    buf := make([]byte, 1<<20)
-    for {
-      <-sigs
-      stacklen := runtime.Stack(buf, true)
-      log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
-    }
+      sigs := make(chan os.Signal, 1)
+      signal.Notify(sigs, syscall.SIGQUIT)
+      buf := make([]byte, 1<<20)
+      for {
+          <-sigs
+          stacklen := runtime.Stack(buf, true)
+          log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
+      }
   }()
   ```
 - [ ] 编译时检查接口的实现
@@ -150,8 +171,8 @@
 - [ ] 一些匿名结构很酷
   ```go
   var hits struct {
-    sync.Mutex
-    n int
+      sync.Mutex
+      n int
   }
   hits.Lock()
   hits.n++
@@ -160,3 +181,4 @@
 - [ ] `httputil.DumpRequest`很有用, 不用重复造轮子
   - https://godoc.org/net/http/httputil#DumpRequest
 - [ ] 获取堆栈调用: `runtime.Caller` https://golang.org/pkg/runtime/#Caller
+- [ ] 解析任意JSON, 放进进`map[string]interface{}{}`
