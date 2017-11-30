@@ -95,12 +95,12 @@
   defer ticker.Stop()
   ```
 - [ ] 使用定制的marshaler加快解析JSON的速度
-  - 但在使用之前 - 别忘了扫整个struct(profile)!
+  - 但在使用之前 - 别忘了扫整个struct(profile)! ex: https://play.golang.org/p/2wCV-ZsDjF
   ```go 
-  func (e Entry) MarshalJSON() ([]byte, error) {
+  func (entry Entry) MarshalJSON() ([]byte, error) {
       buffer := bytes.NewBufferString("{")
       first := true
-      for key, value := range e {
+      for key, value := range entry {
           jsonValue, err := json.Marshal(value)
           if err != nil {
               return nil, err
@@ -109,7 +109,7 @@
               buffer.WriteString(",")
           }
           first = false
-          buffer.WriteString(fmt.Sprintf("\"%d\":%s", key, string(jsonValue)))
+          buffer.WriteString(fmt.Sprintf("%s:%s", key, string(jsonValue)))
       }
       buffer.WriteString("}")
       return buffer.Bytes(), nil
