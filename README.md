@@ -115,6 +115,9 @@
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
 - [ ] easy way to split test into different builds
   - use `// +build integration` and run them with `go test -v --tags integration .`
+- [ ] tiniest Go docker image
+  - https://twitter.com/bbrodriges/status/873414658178396160
+  - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
 
 ### Testing
 - [ ] `go test -short` allows to reduce set of tests to be runned
