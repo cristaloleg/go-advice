@@ -25,15 +25,15 @@
 - [ ] 不要使用`checkErr`函数, 会产生panic或者`os.Exit`
 - [ ] enum不要使用类型别名, 这会破坏类型安全(type safety)
   - https://play.golang.org/p/MGbeDwtXN3
-  - 
+  -
   ```go
   package main
   type Status = int
   type Format = int // 去掉 `=` 就能保证类型安全
-  
+
   const A Status = 1
   const B Format = 1
-  
+
   func main() {
     println(A == B) // true 不是我们想要的
     // 我们希望能在编译时就找出AB两者不是一个类型的错误
@@ -95,8 +95,8 @@
   defer ticker.Stop()
   ```
 - [ ] 使用定制的marshaler加快解析JSON的速度
-  - 但在使用之前 - 别忘了扫整个struct(profile)! ex: https://play.golang.org/p/2wCV-ZsDjF
-  ```go 
+  - 但在使用之前 - 别忘了扫整个struct(profile)! ex: https://play.golang.org/p/SEm9Hvsi0r
+  ```go
   func (entry Entry) MarshalJSON() ([]byte, error) {
       buffer := bytes.NewBufferString("{")
       first := true
@@ -109,7 +109,7 @@
               buffer.WriteString(",")
           }
           first = false
-          buffer.WriteString(fmt.Sprintf("%s:%s", key, string(jsonValue)))
+          buffer.WriteString(key + ":" + string(jsonValue))
       }
       buffer.WriteString("}")
       return buffer.Bytes(), nil
@@ -119,7 +119,10 @@
 ### Build 构建
 - [ ] 为二进制文件瘦身`go build -ldflags="-s -w" ...` !(去除调试信息和符号表)
 - [ ] 对不同构建分割测试的简单方法
-  - 加上注释`// +build integration`, 运行测试时:`go test -v --tags integration .`
+  - 加上注释`// +build integration`, 运行测试使用命令:`go test -v --tags integration .`
+  - [ ] 最小Go docker镜像
+    - https://twitter.com/bbrodriges/status/873414658178396160
+    - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
 
 ### Testing 测试
 - [ ] `go test -short` 可以减少一些测试 !(控制测试粒度)
