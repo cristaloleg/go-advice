@@ -90,7 +90,7 @@
   defer ticker.Stop()
   ```
 - [ ] use custom marshaler to speed up marshaling
-  - but before using it - profile! ex: https://play.golang.org/p/2wCV-ZsDjF
+  - but before using it - profile! ex: https://play.golang.org/p/SEm9Hvsi0r
   ```go
   func (entry Entry) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
@@ -104,7 +104,7 @@
 			buffer.WriteString(",")
 		}
 		first = false
-		buffer.WriteString(fmt.Sprintf("%s:%s", key, string(jsonValue)))
+		buffer.WriteString(key + ":" + string(jsonValue))
 	}
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil
@@ -115,6 +115,9 @@
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
 - [ ] easy way to split test into different builds
   - use `// +build integration` and run them with `go test -v --tags integration .`
+- [ ] tiniest Go docker image
+  - https://twitter.com/bbrodriges/status/873414658178396160
+  - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
 
 ### Testing
 - [ ] `go test -short` allows to reduce set of tests to be runned
