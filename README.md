@@ -45,6 +45,7 @@
   ```go
   func f(a int, _ string() {}
   ```
+- [ ] use `time.Before` and `time.After` to compare time, avoid `time.Sub`
 
 ### CI
 - [ ] run `go format` on CI and compare diff
