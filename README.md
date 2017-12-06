@@ -114,6 +114,7 @@
 	return buffer.Bytes(), nil
   }
   ```
+- [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
