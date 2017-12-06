@@ -41,6 +41,10 @@
 - [ ] iterate over array or slice using range loop
   -  instead of `for i := 3; i < 7; i++ {...}` prefer `for _, c := range a[3:7] {...}`
 - [ ] use backquote(\`) for multiline strings
+- [ ] skip unused param with _
+  ```go
+  func f(a int, _ string() {}
+  ```
 
 ### CI
 - [ ] run `go format` on CI and compare diff
