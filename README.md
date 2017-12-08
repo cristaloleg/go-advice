@@ -9,6 +9,7 @@
 - [ ] group `const` declarations by type and `var` by logic and/or type
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
 - [ ] implement `Stringer` interface for integers const values
+  - https://godoc.org/golang.org/x/tools/cmd/stringer
 - [ ] check your defer's error
   ```go
   defer func() {
