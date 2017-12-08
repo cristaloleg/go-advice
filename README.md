@@ -46,6 +46,7 @@
   func f(a int, _ string() {}
   ```
 - [ ] use `time.Before` and `time.After` to compare time, avoid `time.Sub`
+- [ ] always pass context as a first param to a func with a `ctx` name
 
 ### CI
 - [ ] run `go format` on CI and compare diff
