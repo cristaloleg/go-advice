@@ -47,6 +47,13 @@
   ```
 - [ ] use `time.Before` and `time.After` to compare time, avoid `time.Sub`
 - [ ] always pass context as a first param to a func with a `ctx` name
+- [ ] few params of the same type can be defined in a short way
+  ```go
+  func f(a int, b int, s string, p string)
+  ```
+  ```go
+  func f(a, b int, s, p string)
+  ```
 
 ### CI
 - [ ] run `go format` on CI and compare diff
