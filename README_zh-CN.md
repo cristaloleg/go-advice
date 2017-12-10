@@ -6,13 +6,13 @@
 ### Code 代码
 - [ ] `go fmt`你的代码, 大家都开心
 - [ ] 多重`if`语句可以折叠成`switch`
-- [ ] 使用空结构`chan struct{}`传递信号
-  - `chan bool`稍显不清晰, `struct{}`更合适
+- [ ] 使用空结构`chan struct{}`传递信号, `chan bool`稍显不清晰
 - [ ] 用`30 * time.Second`, 而不是`time.Duration(30) * time.Second`
 - [ ] 将for-select包装成函数
 - [ ] 按照类型组织`const`声明, 按照 逻辑 和/或 类型 组织`var`声明
 - [ ] 所有阻塞或者IO的函数调用都应该能被取消或者有超时(timeout)检测
 - [ ] 为整型常量实现`Stringer`接口
+  - https://godoc.org/golang.org/x/tools/cmd/stringer 
 - [ ] 检查defer中的错误
   ```go
   defer func() {
@@ -45,6 +45,19 @@
 - [ ] 数组或切片的遍历用`range`
   - 与其这么写`for i := 3; i < 7; i++ {...}`, 不如这么写`for _, c := range a[3:7] {...}`
 - [ ] 多行`string`用反引号(\`)
+- [ ] 使用下划线`_`跳过使用的参数
+  ```go
+  func f(a int, _ string() {}
+  ```
+- [ ] 使用`time.Before`和`time.After`比较时间, 避免使用`time.Sub`
+- [ ] 尽量使用`ctx`作为名称, 以函数或方法的第一个参数传递上下文(context)
+- [ ] 相同类型的参数能在函数声明时表现得更简洁
+  ```go
+  func f(a int, b int, s string, p string)
+  ```
+  ```go
+  func f(a, b int, s, p string)
+  ``
 
 ### CI 可持续集成
 - [ ] 在CI上运行`go format`, 然后比较不同
