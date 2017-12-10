@@ -3,13 +3,13 @@
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
-- [ ] use `chan struct{}` to pass signal
-  - `chan bool` makes it less clear, btw `struct{}` is more optimal
+- [ ] use `chan struct{}` to pass signal, `chan bool` makes it less clear
 - [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
 - [ ] always wrap for-select idiom to a function
 - [ ] group `const` declarations by type and `var` by logic and/or type
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
 - [ ] implement `Stringer` interface for integers const values
+  - https://godoc.org/golang.org/x/tools/cmd/stringer
 - [ ] check your defer's error
   ```go
   defer func() {
@@ -41,6 +41,19 @@
 - [ ] iterate over array or slice using range loop
   -  instead of `for i := 3; i < 7; i++ {...}` prefer `for _, c := range a[3:7] {...}`
 - [ ] use backquote(\`) for multiline strings
+- [ ] skip unused param with _
+  ```go
+  func f(a int, _ string() {}
+  ```
+- [ ] use `time.Before` and `time.After` to compare time, avoid `time.Sub`
+- [ ] always pass context as a first param to a func with a `ctx` name
+- [ ] few params of the same type can be defined in a short way
+  ```go
+  func f(a int, b int, s string, p string)
+  ```
+  ```go
+  func f(a, b int, s, p string)
+  ```
 
 ### CI
 - [ ] run `go format` on CI and compare diff
@@ -110,6 +123,7 @@
 	return buffer.Bytes(), nil
   }
   ```
+- [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
