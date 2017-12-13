@@ -54,7 +54,30 @@
   ```go
   func f(a, b int, s, p string)
   ```
+- [ ] the zero value of a slice is nil
+  - https://play.golang.org/p/pNT0d_Bunq
+  ```go
+    var s []int
+    fmt.Println(s, len(s), cap(s))
+    if s == nil {
+      fmt.Println("nil!")
+    }
+    // Output:
+    // [] 0 0
+    // nil!
+  ```
+  - https://play.golang.org/p/meTInNyxtk
+  ```go
+  var a []string
+  b := []string{}
 
+  fmt.Println(reflect.DeepEqual(a, []string{}))
+  fmt.Println(reflect.DeepEqual(b, []string{}))
+  // Output:
+  // false
+  // true
+  ```
+  
 ### CI
 - [ ] run `go format` on CI and compare diff
   - this will ensure that everything was generated and commited
