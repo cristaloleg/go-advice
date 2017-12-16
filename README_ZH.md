@@ -4,17 +4,17 @@
 
 - [ ] 使用 `go fmt` / `gofmt` 格式化你的代码, 让每个人都更开心
 - [ ] 多个 if 语句可以折叠成 switch
-- [ ] 用 `chan struct{}` 来传递信号
-
-    - `chan bool` 表示的不够清楚, 但是 `struct{}` 会更好
-
+- [ ] 用 `chan struct{}` 来传递信号, `chan bool` 表达的不够清楚
 - [ ] `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
 - [ ] 总是把 for-select 换成一个函数
 - [ ] 分组定义 `const` 类型声明和 `var` 逻辑类型声明
 - [ ] 每个阻塞或者 IO 函数操作应该是可取消的或者至少是可超时的
 - [ ] 为整型常量值实现 `Stringer` 接口
+    
+    - https://godoc.org/golang.org/x/tools/cmd/stringer）
+
 - [ ] 用 defer 来检查你的错误
-  
+
 ```go
 defer func() {
     err := ocp.Close()
@@ -28,6 +28,7 @@ defer func() {
 - [ ] 不要给枚举使用别名，因为这打破了类型安全
 
     - https://play.golang.org/p/MGbeDwtXN3
+
 ```go
 package main
 type Status = int
@@ -37,20 +38,65 @@ const A Status = 1
 const B Format = 1
 
 func main() {
-println(A == B)
+    println(A == B)
 }
 ```
 
-- [ ] 如果你想省略返回参数，你最好明确的做
+- [ ] 如果你想省略返回参数，你最好表示出来
 
     - ` _ = f()` 比 `f()` 更好
 
-- [ ] 我们 slice 初始化的更短形式是 `a := []T{}`
+- [ ] 我们用 `a := []T{}` 来简短初始化 slice
 - [ ] 用 range 循环来进行数组或 slice 的迭代
 
     -  `for _, c := range a[3:7] {...}` 比 `for i := 3; i < 7; i++ {...}` 更好
 
 - [ ] 多行字符串用反引号(\`)
+- [ ] 用 `_` 来跳过不用的参数
+
+```golang
+    func f(a int, _ string() {}
+```
+
+- [ ] 用 `time.Before` 和 `time.After` 去比较时间，避免使用 `time.Sub`
+- [ ] 总是将上下文作为第一个参数传递给具有 `ctx` 名称的 func
+- [ ] few params of the same type can be defined in a short way
+- [ ] 几个相同类型的参数定义可以用简短的方式来进行
+
+```golang
+  func f(a int, b int, s string, p string)
+```
+
+```golang
+  func f(a, b int, s, p string)
+```
+
+- [ ] 一个 slice 的零值是 nil
+  - https://play.golang.org/p/pNT0d_Bunq
+
+```golang
+    var s []int
+    fmt.Println(s, len(s), cap(s))
+    if s == nil {
+      fmt.Println("nil!")
+    }
+    // Output:
+    // [] 0 0
+    // nil!
+```
+
+  - https://play.golang.org/p/meTInNyxtk
+
+```golang
+  var a []string
+  b := []string{}
+
+  fmt.Println(reflect.DeepEqual(a, []string{}))
+  fmt.Println(reflect.DeepEqual(b, []string{}))
+  // Output:
+  // false
+  // true
+```
 
 ### 持续集成 ###
 
@@ -109,6 +155,7 @@ println(A == B)
 - [ ] 如果你不需要用它，可以考虑丢弃它，例如`io.Copy(ioutil.Discard, resp.Body)`
 
     - HTTP 客户端的传输不会重用连接，直到body被读完和关闭。
+
 ```go
   res, _ := client.Do(req)
   io.Copy(ioutil.Discard, res.Body)
@@ -126,12 +173,41 @@ ticker := time.NewTicker(1 * time.Second)
 defer ticker.Stop()
 ```
 
+- [ ] 用自定义的 marshaler 去加速 marshaler 过程
+  - 但是在使用它之前要进行定制！例如：https://play.golang.org/p/SEm9Hvsi0r
+  
+  ```go
+  func (entry Entry) MarshalJSON() ([]byte, error) {
+	buffer := bytes.NewBufferString("{")
+	first := true
+	for key, value := range entry {
+		jsonValue, err := json.Marshal(value)
+		if err != nil {
+			return nil, err
+		}
+		if !first {
+			buffer.WriteString(",")
+		}
+		first = false
+		buffer.WriteString(key + ":" + string(jsonValue))
+	}
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
+  }
+  ```
+
+- [ ] `sync.Map` 不是万能的，没有很强的理由就不要使用它。
+
 ### 构建 ###
 
 - [ ] 用这个命令 `go build -ldflags="-s -w" ...` 去掉你的二进制文件
 - [ ] 拆分构建不同版本的简单方法
 
   - 用 `// +build integration` 并且运行他们 `go test -v --tags integration .`
+
+- [ ] 最小的 Go Docker 镜像
+  - https://twitter.com/bbrodriges/status/873414658178396160
+  - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
 
 ### 测试 ###
 
@@ -145,7 +221,7 @@ func TestSomething(t *testing.T) {
 }
 ```
 
-- [ ] 根据架构跳过测试
+- [ ] 根据系统架构跳过测试
 
 ```go
 if runtime.GOARM == "arm" {
@@ -216,3 +292,5 @@ hits.Unlock()
 - [ ] 获得调用堆栈，我们可以使用 `runtime.Caller`
 
     - https://golang.org/pkg/runtime/#Caller
+
+- [ ] 要 marshal 任意的 JSON， 你可以 marshal 为 `map[string]interface{}{}`
