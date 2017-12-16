@@ -3,13 +3,13 @@
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
-- [ ] use `chan struct{}` to pass signal
-  - `chan bool` makes it less clear, btw `struct{}` is more optimal
+- [ ] use `chan struct{}` to pass signal, `chan bool` makes it less clear
 - [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
 - [ ] always wrap for-select idiom to a function
 - [ ] group `const` declarations by type and `var` by logic and/or type
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
 - [ ] implement `Stringer` interface for integers const values
+  - https://godoc.org/golang.org/x/tools/cmd/stringer
 - [ ] check your defer's error
   ```go
   defer func() {
@@ -41,7 +41,43 @@
 - [ ] iterate over array or slice using range loop
   -  instead of `for i := 3; i < 7; i++ {...}` prefer `for _, c := range a[3:7] {...}`
 - [ ] use backquote(\`) for multiline strings
+- [ ] skip unused param with _
+  ```go
+  func f(a int, _ string() {}
+  ```
+- [ ] use `time.Before` and `time.After` to compare time, avoid `time.Sub`
+- [ ] always pass context as a first param to a func with a `ctx` name
+- [ ] few params of the same type can be defined in a short way
+  ```go
+  func f(a int, b int, s string, p string)
+  ```
+  ```go
+  func f(a, b int, s, p string)
+  ```
+- [ ] the zero value of a slice is nil
+  - https://play.golang.org/p/pNT0d_Bunq
+  ```go
+    var s []int
+    fmt.Println(s, len(s), cap(s))
+    if s == nil {
+      fmt.Println("nil!")
+    }
+    // Output:
+    // [] 0 0
+    // nil!
+  ```
+  - https://play.golang.org/p/meTInNyxtk
+  ```go
+  var a []string
+  b := []string{}
 
+  fmt.Println(reflect.DeepEqual(a, []string{}))
+  fmt.Println(reflect.DeepEqual(b, []string{}))
+  // Output:
+  // false
+  // true
+  ```
+  
 ### CI
 - [ ] run `go format` on CI and compare diff
   - this will ensure that everything was generated and commited
@@ -89,11 +125,36 @@
   ticker := time.NewTicker(1 * time.Second)
   defer ticker.Stop()
   ```
+- [ ] use custom marshaler to speed up marshaling
+  - but before using it - profile! ex: https://play.golang.org/p/SEm9Hvsi0r
+  ```go
+  func (entry Entry) MarshalJSON() ([]byte, error) {
+	buffer := bytes.NewBufferString("{")
+	first := true
+	for key, value := range entry {
+		jsonValue, err := json.Marshal(value)
+		if err != nil {
+			return nil, err
+		}
+		if !first {
+			buffer.WriteString(",")
+		}
+		first = false
+		buffer.WriteString(key + ":" + string(jsonValue))
+	}
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
+  }
+  ```
+- [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
 - [ ] easy way to split test into different builds
   - use `// +build integration` and run them with `go test -v --tags integration .`
+- [ ] tiniest Go docker image
+  - https://twitter.com/bbrodriges/status/873414658178396160
+  - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
 
 ### Testing
 - [ ] `go test -short` allows to reduce set of tests to be runned
@@ -155,3 +216,4 @@
 - [ ] `httputil.DumpRequest` is very useful thing, don't create your own
   - https://godoc.org/net/http/httputil#DumpRequest
 - [ ] to get call stack we've `runtime.Caller` https://golang.org/pkg/runtime/#Caller
+- [ ] to marshal arbitrary JSON you can marshal to `map[string]interface{}{}`
