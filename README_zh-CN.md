@@ -57,7 +57,30 @@
   ```
   ```go
   func f(a, b int, s, p string)
-  ``
+  ```
+- [ ] 切片的零值是nil 
+  - https://play.golang.org/p/pNT0d_Bunq  
+  ```go
+  var s []int
+  fmt.Println(s, len(s), cap(s))
+  if s == nil {
+      fmt.Println("nil!")
+  } 
+  // Output:
+  // [] 0 0
+  // nil!
+  ```
+  - https://play.golang.org/p/meTInNyxtk  
+  ```go
+  var a []string
+  b := []string{}
+  
+  fmt.Println(reflect.DeepEqual(a, []string{}))
+  fmt.Println(reflect.DeepEqual(b, []string{}))
+  // Output:
+  // false
+  // true
+  ```
 
 ### CI 可持续集成
 - [ ] 在CI上运行`go format`, 然后比较不同
