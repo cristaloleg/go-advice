@@ -79,6 +79,15 @@
   // false
   // true
   ```
+- [ ] do not comparet enum types with `<`, `>`, `<=` and `>=`
+  - use explicit values, don't do this:
+  ```go
+  value := reflect.ValueOf(object)
+  kind := value.Kind()
+  if kind >= reflect.Chan && kind <= reflect.Slice {
+    // ...
+  }
+  ```
   
 ### CI
 - [ ] run `go format` on CI and compare diff
