@@ -3,6 +3,7 @@
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
+  - `chan struct{}` weights less, because `unsafe.Sizeof(SomeEmptyStruct) == 0`
 - [ ] use `chan struct{}` to pass signal, `chan bool` makes it less clear
 - [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
 - [ ] always wrap for-select idiom to a function
@@ -20,6 +21,7 @@
   }()
   ```
 - [ ] don't use `checkErr` function which panics or does `os.Exit`
+- [ ] use panic only in very specific situations, you have to handle error
 - [ ] don't use alias for enums 'cause this breaks type safety
   - https://play.golang.org/p/MGbeDwtXN3
   - 
@@ -76,6 +78,15 @@
   // Output:
   // false
   // true
+  ```
+- [ ] do not comparet enum types with `<`, `>`, `<=` and `>=`
+  - use explicit values, don't do this:
+  ```go
+  value := reflect.ValueOf(object)
+  kind := value.Kind()
+  if kind >= reflect.Chan && kind <= reflect.Slice {
+    // ...
+  }
   ```
   
 ### CI
