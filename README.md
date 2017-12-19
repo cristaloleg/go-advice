@@ -59,7 +59,6 @@
 ### Performance
 - [ ] do not omit `defer`
   - 200ns speedup is negligible in most cases
-  - defer also add some kilobytes to your program
 - [ ] always close http body aka `defer r.Body.Close()`
   - unless you need leaked goroutine
 - [ ] filtering without allocating
