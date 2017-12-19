@@ -2,8 +2,9 @@
 
 ### 代码 ###
 
-- [ ] 使用 `go fmt` / `gofmt` 格式化你的代码, 让每个人都更开心
+- [ ] 使用 `go fmt` / `gofmt` 格式化你的代码, 让大家都开心
 - [ ] 多个 if 语句可以折叠成 switch
+  - `chan struct{}` 权重少, 因为 `unsafe.Sizeof(SomeEmptyStruct) == 0`
 - [ ] 用 `chan struct{}` 来传递信号, `chan bool` 表达的不够清楚
 - [ ] `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
 - [ ] 总是把 for-select 换成一个函数
@@ -25,6 +26,7 @@ defer func() {
 ```
 
 - [ ] 任何 panic 都不要使用 `checkErr` 函数或者用 `os.Exit`
+- [ ] 仅仅在很特殊情况下才使用 panic, 你必须要去处理 error
 - [ ] 不要给枚举使用别名，因为这打破了类型安全
 
     - https://play.golang.org/p/MGbeDwtXN3
@@ -97,6 +99,17 @@ func main() {
   // false
   // true
 ```
+
+- [ ] 不要将枚举类型与 `<`, `>`, `<=` 和 `>=` 进行比较
+   - 使用确定的值，不要像下面这样做:
+    
+    ```go
+    value := reflect.ValueOf(object)
+    kind := value.Kind()
+    if kind >= reflect.Chan && kind <= reflect.Slice {
+      // ...
+    }
+    ```
 
 ### 持续集成 ###
 
