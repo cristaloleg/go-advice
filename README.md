@@ -158,6 +158,8 @@
   }
   ```
 - [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
+- [ ] storing non-pointer values in `sync.Pool` allocates memory
+  - more: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
