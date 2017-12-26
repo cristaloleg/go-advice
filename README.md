@@ -88,6 +88,7 @@
     // ...
   }
   ```
+- [ ] use `%+v` to print data with sufficient details
   
 ### CI
 - [ ] run `go format` on CI and compare diff
