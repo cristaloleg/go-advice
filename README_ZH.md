@@ -111,6 +111,8 @@ func main() {
     }
     ```
 
+- [ ] 用 `%+v` 来打印提供数据的足够多的信息
+
 ### 持续集成 ###
 
 - [ ] run go format on CI and compare diff
@@ -210,6 +212,15 @@ defer ticker.Stop()
   ```
 
 - [ ] `sync.Map` 不是万能的，没有很强的理由就不要使用它。
+- [ ] 在 `sync.Pool` 中分配内存存储非指针数据
+    - 更多: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
+- [ ] 正则表达式是互斥的
+   - 为了避免在并行程序性能下降，使用复制:
+  
+    ```go
+    re, err := regexp.Compile(pattern)
+    re2 := re.Copy()
+    ```
 
 ### 构建 ###
 
