@@ -88,6 +88,7 @@
     // ...
   }
   ```
+- [ ] use `%+v` to print data with sufficient details
   
 ### CI
 - [ ] run `go format` on CI and compare diff
@@ -158,6 +159,14 @@
   }
   ```
 - [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
+- [ ] storing non-pointer values in `sync.Pool` allocates memory
+  - more: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
+- [ ] regular expressions are mutexed
+  - to avoid performance degradation in concurrent programs make a copy:
+  ```go
+  re, err := regexp.Compile(pattern)
+  re2 := re.Copy()
+  ```
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
