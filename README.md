@@ -3,7 +3,6 @@
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
-  - `chan struct{}` weights less, because `unsafe.Sizeof(SomeEmptyStruct) == 0`
 - [ ] use `chan struct{}` to pass signal, `chan bool` makes it less clear
 - [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
 - [ ] always wrap for-select idiom to a function
@@ -79,7 +78,7 @@
   // false
   // true
   ```
-- [ ] do not comparet enum types with `<`, `>`, `<=` and `>=`
+- [ ] do not compare enum types with `<`, `>`, `<=` and `>=`
   - use explicit values, don't do this:
   ```go
   value := reflect.ValueOf(object)
@@ -89,13 +88,6 @@
   }
   ```
 - [ ] use `%+v` to print data with sufficient details
-  
-### CI
-- [ ] run `go format` on CI and compare diff
-  - this will ensure that everything was generated and commited
-- [ ] to run Travis-CI with the latest Go use `travis 1`
-  - see more: https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
-- [ ] check if there are mistakes in code formatting `diff -u <(echo -n) <(gofmt -d .)`
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
@@ -132,7 +124,7 @@
   ```
 - [ ] don't use defer in a loop or you'll get a small memory leak
   - 'cause defers will grow your stack without the reason
-- [ ] don't forget to stop ticker, unless you need leaked channel
+- [ ] don't forget to stop ticker, unless you need a leaked channel
   ```go
   ticker := time.NewTicker(1 * time.Second)
   defer ticker.Stop()
@@ -159,6 +151,7 @@
   }
   ```
 - [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
+  - more: https://github.com/golang/go/blob/master/src/sync/map.go#L12
 - [ ] storing non-pointer values in `sync.Pool` allocates memory
   - more: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
 - [ ] regular expressions are mutexed
@@ -175,8 +168,14 @@
 - [ ] tiniest Go docker image
   - https://twitter.com/bbrodriges/status/873414658178396160
   - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
+- [ ] run `go format` on CI and compare diff
+  - this will ensure that everything was generated and commited
+- [ ] to run Travis-CI with the latest Go use `travis 1`
+  - see more: https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
+- [ ] check if there are mistakes in code formatting `diff -u <(echo -n) <(gofmt -d .)`
 
 ### Testing
+- [ ] prefer `package_test` name for tests, rather than `package`
 - [ ] `go test -short` allows to reduce set of tests to be runned
   ```go
   func TestSomething(t *testing.T) {
@@ -191,9 +190,6 @@
     t.Skip("this doesn't work under ARM")
   }
   ```
-- [ ] prefer `package_test` name for tests, rather than `package`
-- [ ] for fast benchmark comparison we've a `benchcmp` tool
-  - https://godoc.org/golang.org/x/tools/cmd/benchcmp
 - [ ] track your allocations with `testing.AllocsPerRun`
   - https://godoc.org/testing#AllocsPerRun
 
@@ -202,6 +198,8 @@
 - [ ] `go list` allows to find all direct and transitive dependencies
   - `go list -f '{{ .Imports }}' package`
   - `go list -f '{{ .Deps }}' package`
+- [ ] for fast benchmark comparison we've a `benchcmp` tool
+  - https://godoc.org/golang.org/x/tools/cmd/benchcmp
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
