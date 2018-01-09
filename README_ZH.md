@@ -4,7 +4,6 @@
 
 - [ ] 使用 `go fmt` / `gofmt` 格式化你的代码, 让大家都开心
 - [ ] 多个 if 语句可以折叠成 switch
-  - `chan struct{}` 权重少, 因为 `unsafe.Sizeof(SomeEmptyStruct) == 0`
 - [ ] 用 `chan struct{}` 来传递信号, `chan bool` 表达的不够清楚
 - [ ] `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
 - [ ] 总是把 for-select 换成一个函数
@@ -74,7 +73,8 @@ func main() {
 ```
 
 - [ ] 一个 slice 的零值是 nil
-  - https://play.golang.org/p/pNT0d_Bunq
+  
+    - https://play.golang.org/p/pNT0d_Bunq
 
 ```golang
     var s []int
@@ -101,7 +101,8 @@ func main() {
 ```
 
 - [ ] 不要将枚举类型与 `<`, `>`, `<=` 和 `>=` 进行比较
-   - 使用确定的值，不要像下面这样做:
+  
+    - 使用确定的值，不要像下面这样做:
     
     ```go
     value := reflect.ValueOf(object)
@@ -112,18 +113,6 @@ func main() {
     ```
 
 - [ ] 用 `%+v` 来打印数据的比较全的信息
-
-### 持续集成 ###
-
-- [ ] run go format on CI and compare diff
-  
-    - 这将确保一切都是生成的和承诺的
-
-- [ ] 用最新的 Go 运行 Travis-CI，用 `travis 1`
-  
-    - 了解更多：https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
-
-- [ ] 检查代码格式是否有错误 `diff -u <(echo -n) <(gofmt -d .)`
 
 ### 并发 ###
 
@@ -189,7 +178,8 @@ defer ticker.Stop()
 ```
 
 - [ ] 用自定义的 marshaler 去加速 marshaler 过程
-  - 但是在使用它之前要进行定制！例如：https://play.golang.org/p/SEm9Hvsi0r
+  
+    - 但是在使用它之前要进行定制！例如：https://play.golang.org/p/SEm9Hvsi0r
   
   ```go
   func (entry Entry) MarshalJSON() ([]byte, error) {
@@ -212,10 +202,16 @@ defer ticker.Stop()
   ```
 
 - [ ] `sync.Map` 不是万能的，没有很强的理由就不要使用它。
+  
+    - 了解更多: https://github.com/golang/go/blob/master/src/sync/map.go#L12
+  
 - [ ] 在 `sync.Pool` 中分配内存存储非指针数据
-    - 更多: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
+    
+    - 了解更多: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
+
 - [ ] 正则表达式是互斥的
-   - 为了避免在并行程序性能下降，使用复制:
+  
+    - 为了避免在并行程序性能下降，使用复制:
   
     ```go
     re, err := regexp.Compile(pattern)
@@ -227,14 +223,26 @@ defer ticker.Stop()
 - [ ] 用这个命令 `go build -ldflags="-s -w" ...` 去掉你的二进制文件
 - [ ] 拆分构建不同版本的简单方法
 
-  - 用 `// +build integration` 并且运行他们 `go test -v --tags integration .`
+    - 用 `// +build integration` 并且运行他们 `go test -v --tags integration .`
 
 - [ ] 最小的 Go Docker 镜像
-  - https://twitter.com/bbrodriges/status/873414658178396160
-  - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
+  
+    - https://twitter.com/bbrodriges/status/873414658178396160
+    - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
+
+- [ ] run go format on CI and compare diff
+  
+    - 这将确保一切都是生成的和承诺的
+
+- [ ] 用最新的 Go 运行 Travis-CI，用 `travis 1`
+  
+    - 了解更多：https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
+
+- [ ] 检查代码格式是否有错误 `diff -u <(echo -n) <(gofmt -d .)`
 
 ### 测试 ###
 
+- [ ] 更喜欢 `package_test` 命名，而不是 `package` 。
 - [ ] `go test -short` 允许减少要运行的一组测试
 
 ```go
@@ -269,6 +277,10 @@ if runtime.GOARM == "arm" {
 
     - `go list -f '{{ .Imports }}' package`
     - `go list -f '{{ .Deps }}' package`
+
+- [ ] 对于快速基准比较，我们有一个 `benchcmp` 工具。
+
+    - https://godoc.org/golang.org/x/tools/cmd/benchcmp
 
 ### Misc ###
 
