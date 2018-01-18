@@ -160,7 +160,19 @@
   re, err := regexp.Compile(pattern)
   re2 := re.Copy()
   ```
-
+- [ ] to hide a pointer from escape analysis you might carefully(!!!) use this func:
+  - source: https://go-review.googlesource.com/c/go/+/86976
+  ```
+  // noescape hides a pointer from escape analysis.  noescape is
+  // the identity function but escape analysis doesn't think the
+  // output depends on the input. noescape is inlined and currently
+  // compiles down to zero instructions.
+  //go:nosplit
+  func noescape(p unsafe.Pointer) unsafe.Pointer {
+  	x := uintptr(p)
+  	return unsafe.Pointer(x ^ 0)
+  }
+  ```
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
 - [ ] easy way to split test into different builds
