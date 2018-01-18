@@ -128,7 +128,6 @@
     // ...
   }
 ```
-
 - [ ] 用 `%+v` 来打印数据的比较全的信息
 - [ ] 注意空结构 `struct{}`, 看 issue: https://github.com/golang/go/issues/23440
     
@@ -194,6 +193,7 @@
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
 
 - [ ] 不要在你不拥有的结构上使用 `encoding / gob`
+
   - 它不受新添加或重新排序字段的保护
 
 ### 并发 ###
