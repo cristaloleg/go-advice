@@ -103,7 +103,9 @@
     fmt.Println(&a == &b)          // ...but the comparison returns true
   }
   ```
-  
+- [ ] wrap errors with http://github.com/pkg/errors
+  - so: `errors.Wrap(err, “additional message to a given error”)`
+
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't use flags, mutexes, channels or atomics
