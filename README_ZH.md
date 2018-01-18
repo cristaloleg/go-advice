@@ -55,7 +55,7 @@ func main() {
 - [ ] 多行字符串用反引号(\`)
 - [ ] 用 `_` 来跳过不用的参数
 
-```golang
+```go
     func f(a int, _ string() {}
 ```
 
@@ -64,11 +64,11 @@ func main() {
 - [ ] few params of the same type can be defined in a short way
 - [ ] 几个相同类型的参数定义可以用简短的方式来进行
 
-```golang
+```go
   func f(a int, b int, s string, p string)
 ```
 
-```golang
+```go
   func f(a, b int, s, p string)
 ```
 
@@ -76,7 +76,7 @@ func main() {
   
     - https://play.golang.org/p/pNT0d_Bunq
 
-```golang
+```go
     var s []int
     fmt.Println(s, len(s), cap(s))
     if s == nil {
@@ -89,7 +89,7 @@ func main() {
 
   - https://play.golang.org/p/meTInNyxtk
 
-```golang
+```go
   var a []string
   b := []string{}
 
@@ -104,15 +104,36 @@ func main() {
   
     - 使用确定的值，不要像下面这样做:
     
-    ```go
-    value := reflect.ValueOf(object)
-    kind := value.Kind()
-    if kind >= reflect.Chan && kind <= reflect.Slice {
-      // ...
-    }
-    ```
+```go
+  value := reflect.ValueOf(object)
+  kind := value.Kind()
+  if kind >= reflect.Chan && kind <= reflect.Slice {
+    // ...
+  }
+```
 
 - [ ] 用 `%+v` 来打印数据的比较全的信息
+- [ ] 注意空结构 `struct{}`, 看 issue: https://github.com/golang/go/issues/23440
+    
+    - more: https://play.golang.org/p/9C0puRUstrP
+    
+```go
+func f1() {
+  var a, b struct{}
+  print(&a, "\n", &b, "\n") // Prints same address
+  fmt.Println(&a == &b)     // Comparison returns false
+}
+    
+func f2() {
+  var a, b struct{}
+  fmt.Printf("%p\n%p\n", &a, &b) // Again, same address
+  fmt.Println(&a == &b)          // ...but the comparison returns true
+}
+```
+
+- [ ] 包装错误： http://github.com/pkg/errors
+
+    - 例如: `errors.Wrap(err, “additional message to a given error”)`
 
 ### 并发 ###
 
@@ -181,25 +202,25 @@ defer ticker.Stop()
   
     - 但是在使用它之前要进行定制！例如：https://play.golang.org/p/SEm9Hvsi0r
   
-  ```go
-  func (entry Entry) MarshalJSON() ([]byte, error) {
-	buffer := bytes.NewBufferString("{")
-	first := true
-	for key, value := range entry {
-		jsonValue, err := json.Marshal(value)
-		if err != nil {
-			return nil, err
-		}
-		if !first {
-			buffer.WriteString(",")
-		}
-		first = false
-		buffer.WriteString(key + ":" + string(jsonValue))
+```go
+func (entry Entry) MarshalJSON() ([]byte, error) {
+buffer := bytes.NewBufferString("{")
+first := true
+for key, value := range entry {
+	jsonValue, err := json.Marshal(value)
+	if err != nil {
+		return nil, err
 	}
-	buffer.WriteString("}")
-	return buffer.Bytes(), nil
-  }
-  ```
+	if !first {
+		buffer.WriteString(",")
+	}
+	first = false
+	buffer.WriteString(key + ":" + string(jsonValue))
+}
+buffer.WriteString("}")
+return buffer.Bytes(), nil
+}
+```
 
 - [ ] `sync.Map` 不是万能的，没有很强的理由就不要使用它。
   
@@ -213,10 +234,26 @@ defer ticker.Stop()
   
     - 为了避免在并行程序性能下降，使用复制:
   
-    ```go
-    re, err := regexp.Compile(pattern)
-    re2 := re.Copy()
-    ```
+```go
+re, err := regexp.Compile(pattern)
+re2 := re.Copy()
+```
+
+- [ ] 为了隐藏逃生分析的指针，你可以小心使用这个函数：:
+    
+    - 来源: https://go-review.googlesource.com/c/go/+/86976
+    
+```go
+  // noescape hides a pointer from escape analysis.  noescape is
+  // the identity function but escape analysis doesn't think the
+  // output depends on the input. noescape is inlined and currently
+  // compiles down to zero instructions.
+  //go:nosplit
+  func noescape(p unsafe.Pointer) unsafe.Pointer {
+    x := uintptr(p)
+    return unsafe.Pointer(x ^ 0)
+  }
+```
 
 ### 构建 ###
 
