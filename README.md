@@ -88,7 +88,22 @@
   }
   ```
 - [ ] use `%+v` to print data with sufficient details
+- [ ] be careful with empty struct `struct{}`, see issue: https://github.com/golang/go/issues/23440
+  - more: https://play.golang.org/p/9C0puRUstrP
+  ```go
+  func f1() {
+    var a, b struct{}
+    print(&a, "\n", &b, "\n") // Prints same address
+    fmt.Println(&a == &b)     // Comparison returns false
+  }
 
+  func f2() {
+    var a, b struct{}
+    fmt.Printf("%p\n%p\n", &a, &b) // Again, same address
+    fmt.Println(&a == &b)          // ...but the comparison returns true
+  }
+  ```
+  
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't use flags, mutexes, channels or atomics
