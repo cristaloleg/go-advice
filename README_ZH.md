@@ -16,12 +16,12 @@
 - [ ] 用 defer 来检查你的错误
 
 ```go
-defer func() {
-    err := ocp.Close()
-    if err != nil {
-        rerr = err
-    }
-}()
+  defer func() {
+      err := ocp.Close()
+      if err != nil {
+          rerr = err
+      }
+  }()
 ```
 
 - [ ] 任何 panic 都不要使用 `checkErr` 函数或者用 `os.Exit`
@@ -31,16 +31,16 @@ defer func() {
     - https://play.golang.org/p/MGbeDwtXN3
 
 ```go
-package main
-type Status = int
-type Format = int // remove `=` to have type safety
-
-const A Status = 1
-const B Format = 1
-
-func main() {
-    println(A == B)
-}
+  package main
+  type Status = int
+  type Format = int // remove `=` to have type safety
+  
+  const A Status = 1
+  const B Format = 1
+  
+  func main() {
+      println(A == B)
+  }
 ```
 
 - [ ] 如果你想省略返回参数，你最好表示出来
@@ -55,8 +55,8 @@ func main() {
 - [ ] 多行字符串用反引号(\`)
 - [ ] 用 `_` 来跳过不用的参数
 
-```golang
-    func f(a int, _ string() {}
+```go
+  func f(a int, _ string() {}
 ```
 
 - [ ] 用 `time.Before` 和 `time.After` 去比较时间，避免使用 `time.Sub`
@@ -64,11 +64,11 @@ func main() {
 - [ ] few params of the same type can be defined in a short way
 - [ ] 几个相同类型的参数定义可以用简短的方式来进行
 
-```golang
+```go
   func f(a int, b int, s string, p string)
 ```
 
-```golang
+```go
   func f(a, b int, s, p string)
 ```
 
@@ -76,20 +76,20 @@ func main() {
   
     - https://play.golang.org/p/pNT0d_Bunq
 
-```golang
-    var s []int
-    fmt.Println(s, len(s), cap(s))
-    if s == nil {
-      fmt.Println("nil!")
-    }
-    // Output:
-    // [] 0 0
-    // nil!
+```go
+  var s []int
+  fmt.Println(s, len(s), cap(s))
+  if s == nil {
+    fmt.Println("nil!")
+  }
+  // Output:
+  // [] 0 0
+  // nil!
 ```
 
   - https://play.golang.org/p/meTInNyxtk
 
-```golang
+```go
   var a []string
   b := []string{}
 
@@ -104,15 +104,36 @@ func main() {
   
     - 使用确定的值，不要像下面这样做:
     
-    ```go
-    value := reflect.ValueOf(object)
-    kind := value.Kind()
-    if kind >= reflect.Chan && kind <= reflect.Slice {
-      // ...
-    }
-    ```
+```go
+  value := reflect.ValueOf(object)
+  kind := value.Kind()
+  if kind >= reflect.Chan && kind <= reflect.Slice {
+    // ...
+  }
+```
 
 - [ ] 用 `%+v` 来打印数据的比较全的信息
+- [ ] 注意空结构 `struct{}`, 看 issue: https://github.com/golang/go/issues/23440
+    
+    - more: https://play.golang.org/p/9C0puRUstrP
+    
+```go
+  func f1() {
+    var a, b struct{}
+    print(&a, "\n", &b, "\n") // Prints same address
+    fmt.Println(&a == &b)     // Comparison returns false
+  }
+      
+  func f2() {
+    var a, b struct{}
+    fmt.Printf("%p\n%p\n", &a, &b) // Again, same address
+    fmt.Println(&a == &b)          // ...but the comparison returns true
+  }
+```
+
+- [ ] 包装错误： http://github.com/pkg/errors
+
+    - 例如: `errors.Wrap(err, “additional message to a given error”)`
 
 ### 并发 ###
 
@@ -173,33 +194,33 @@ func main() {
 - [ ] 不要忘记停止 ticker, 除非你需要泄露 channel
   
 ```go
-ticker := time.NewTicker(1 * time.Second)
-defer ticker.Stop()
+  ticker := time.NewTicker(1 * time.Second)
+  defer ticker.Stop()
 ```
 
 - [ ] 用自定义的 marshaler 去加速 marshaler 过程
   
     - 但是在使用它之前要进行定制！例如：https://play.golang.org/p/SEm9Hvsi0r
   
-  ```go
+```go
   func (entry Entry) MarshalJSON() ([]byte, error) {
-	buffer := bytes.NewBufferString("{")
-	first := true
-	for key, value := range entry {
-		jsonValue, err := json.Marshal(value)
-		if err != nil {
-			return nil, err
-		}
-		if !first {
-			buffer.WriteString(",")
-		}
-		first = false
-		buffer.WriteString(key + ":" + string(jsonValue))
-	}
-	buffer.WriteString("}")
-	return buffer.Bytes(), nil
+    buffer := bytes.NewBufferString("{")
+    first := true
+    for key, value := range entry {
+    	jsonValue, err := json.Marshal(value)
+    	if err != nil {
+    		return nil, err
+    	}
+    	if !first {
+    		buffer.WriteString(",")
+    	}
+    	first = false
+    	buffer.WriteString(key + ":" + string(jsonValue))
+    }
+    buffer.WriteString("}")
+    return buffer.Bytes(), nil
   }
-  ```
+```
 
 - [ ] `sync.Map` 不是万能的，没有很强的理由就不要使用它。
   
@@ -213,10 +234,26 @@ defer ticker.Stop()
   
     - 为了避免在并行程序性能下降，使用复制:
   
-    ```go
-    re, err := regexp.Compile(pattern)
-    re2 := re.Copy()
-    ```
+```go
+  re, err := regexp.Compile(pattern)
+  re2 := re.Copy()
+```
+
+- [ ] 为了隐藏逃生分析的指针，你可以小心使用这个函数：:
+    
+    - 来源: https://go-review.googlesource.com/c/go/+/86976
+    
+```go
+  // noescape hides a pointer from escape analysis.  noescape is
+  // the identity function but escape analysis doesn't think the
+  // output depends on the input. noescape is inlined and currently
+  // compiles down to zero instructions.
+  //go:nosplit
+  func noescape(p unsafe.Pointer) unsafe.Pointer {
+    x := uintptr(p)
+    return unsafe.Pointer(x ^ 0)
+  }
+```
 
 ### 构建 ###
 
@@ -246,19 +283,19 @@ defer ticker.Stop()
 - [ ] `go test -short` 允许减少要运行的一组测试
 
 ```go
-func TestSomething(t *testing.T) {
-  if testing.Short() {
-    t.Skip("skipping test in short mode.")
+  func TestSomething(t *testing.T) {
+    if testing.Short() {
+      t.Skip("skipping test in short mode.")
+    }
   }
-}
 ```
 
 - [ ] 根据系统架构跳过测试
 
 ```go
-if runtime.GOARM == "arm" {
-  t.Skip("this doesn't work under ARM")
-}
+  if runtime.GOARM == "arm" {
+    t.Skip("this doesn't work under ARM")
+  }
 ```
 
 - [ ] 测试名称 `package_test` 比 `package` 要好
@@ -287,22 +324,22 @@ if runtime.GOARM == "arm" {
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
 
 ```go
-go func() {
-  sigs := make(chan os.Signal, 1)
-  signal.Notify(sigs, syscall.SIGQUIT)
-  buf := make([]byte, 1<<20)
-  for {
-    <-sigs
-    stacklen := runtime.Stack(buf, true)
-    log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
-  }
-}()
+  go func() {
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGQUIT)
+    buf := make([]byte, 1<<20)
+    for {
+      <-sigs
+      stacklen := runtime.Stack(buf, true)
+      log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n"  , buf[:stacklen])
+    }
+  }()
 ```
 
 - [ ] 在编译期检查接口的实现
 
 ```go
-var _ io.Reader = (*MyFastReader)(nil)
+  var _ io.Reader = (*MyFastReader)(nil)
 ```
 
 - [ ] len(nil) = 0
@@ -312,13 +349,13 @@ var _ io.Reader = (*MyFastReader)(nil)
 - [ ] 匿名结构很酷
 
 ```go
-var hits struct {
-  sync.Mutex
-  n int
-}
-hits.Lock()
-hits.n++
-hits.Unlock()
+  var hits struct {
+    sync.Mutex
+    n int
+  }
+  hits.Lock()
+  hits.n++
+  hits.Unlock()
 ```
 
 - [ ] `httputil.DumpRequest` 是非常有用的东西，不要自己创建
