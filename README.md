@@ -221,6 +221,8 @@
   ```
 - [ ] track your allocations with `testing.AllocsPerRun`
   - https://godoc.org/testing#AllocsPerRun
+- [ ] run your benchmarks multiple times, to get rid of noise
+  - `go test -test.bench=. -count=20`
 
 ### Tools
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
