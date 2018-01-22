@@ -1,5 +1,15 @@
 # Go-advices
 
+## Contents
+
+- [Code](#code)
+- [Concurrency](#concurrency)
+- [Performance](#performance)
+- [Build](#build)
+- [Testing](#testing)
+- [Tools](#tools)
+- [Misc](#misc)
+    
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
