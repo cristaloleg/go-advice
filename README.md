@@ -1,5 +1,15 @@
 # Go-advices
 
+## Contents
+
+- [Code](#code)
+- [Concurrency](#concurrency)
+- [Performance](#performance)
+- [Build](#build)
+- [Testing](#testing)
+- [Tools](#tools)
+- [Misc](#misc)
+    
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
@@ -105,7 +115,10 @@
   ```
 - [ ] wrap errors with http://github.com/pkg/errors
   - so: `errors.Wrap(err, “additional message to a given error”)`
-
+- [ ] be careful with `range` in Go:
+  - `for i := range a` and `for i, v := range &a` doesn't make a copy of `a`
+  - but `for i, v := range a` does
+  - more: https://play.golang.org/p/4b181zkB1O
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't use flags, mutexes, channels or atomics
@@ -221,6 +234,8 @@
   ```
 - [ ] track your allocations with `testing.AllocsPerRun`
   - https://godoc.org/testing#AllocsPerRun
+- [ ] run your benchmarks multiple times, to get rid of noise
+  - `go test -test.bench=. -count=20`
 
 ### Tools
 - [ ] quick replace `gofmt -w -l -r "panic(err) -> log.Error(err)" .`
