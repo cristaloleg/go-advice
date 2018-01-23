@@ -56,7 +56,7 @@
   ```go
   func f(a int, _ string() {}
   ```
-- [ ] use `time.Before` and `time.After` to compare time, avoid `time.Sub`
+- [ ] If you are comparing timestamps, use `time.Before` or `time.After`. Don't use `time.Sub` to get a duration and then check its value.
 - [ ] always pass context as a first param to a func with a `ctx` name
 - [ ] few params of the same type can be defined in a short way
   ```go
