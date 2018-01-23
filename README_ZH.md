@@ -196,6 +196,12 @@
 
   - 它不受新添加或重新排序字段的保护
 
+- [ ] 在 Go 里面要小心使用 `range`:
+    
+    - `for i := range a` and `for i, v := range &a` ，都不是 `a` 的副本
+    - 但是 `for i, v := range a` 里面的就是 `a` 的副本
+    - 更多: https://play.golang.org/p/4b181zkB1O
+
 ### 并发 ###
 
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
