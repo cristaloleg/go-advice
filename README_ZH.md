@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Go-advices 中文版本](#go-advices-%E4%B8%AD%E6%96%87%E7%89%88%E6%9C%AC)
+    - [代码](#%E4%BB%A3%E7%A0%81)
+    - [并发](#%E5%B9%B6%E5%8F%91)
+    - [性能](#%E6%80%A7%E8%83%BD)
+    - [构建](#%E6%9E%84%E5%BB%BA)
+    - [测试](#%E6%B5%8B%E8%AF%95)
+    - [工具](#%E5%B7%A5%E5%85%B7)
+    - [Misc](#misc)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Go-advices 中文版本 #
 
 ### 代码 ###
@@ -134,6 +149,12 @@
 - [ ] 包装错误： http://github.com/pkg/errors
 
     - 例如: `errors.Wrap(err, “additional message to a given error”)`
+
+- [ ] 在 Go 里面要小心使用 `range`:
+    
+    - `for i := range a` and `for i, v := range &a` ，都不是 `a` 的副本
+    - 但是 `for i, v := range a` 里面的就是 `a` 的副本
+    - 更多: https://play.golang.org/p/4b181zkB1O
 
 ### 并发 ###
 
@@ -306,6 +327,10 @@
 - [ ] 用 `testing.AllocsPerRun` 跟踪你的分配
 
     - https://godoc.org/testing#AllocsPerRun
+
+- [ ] 多次运行你的基准测试可以避免噪音。
+    
+    - `go test -test.bench=. -count=20`
 
 ### 工具 ###
 
