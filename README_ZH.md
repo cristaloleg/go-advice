@@ -76,7 +76,7 @@
   func f(a int, _ string) {}
 ```
 
-- [ ] 如果你是比较时间戳，请使用 `time.Before` 或 `time.After` ，不要使用 `time.Sub` 来获得 duration (持续时间)，然后检查它的值。 #17
+- [ ] 如果你是比较时间戳，请使用 `time.Before` 或 `time.After` ，不要使用 `time.Sub` 来获得 duration (持续时间)，然后检查它的值。
 - [ ] 总是将上下文作为第一个参数传递给具有 `ctx` 名称的 func
 - [ ] few params of the same type can be defined in a short way
 - [ ] 几个相同类型的参数定义可以用简短的方式来进行
