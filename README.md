@@ -123,6 +123,8 @@
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't use flags, mutexes, channels or atomics
 - [ ] to block forever use `select{}`, omit channels, waiting for a signal
+- [ ] don't close in-channel, this is a responsibility of it's creator
+  - writing to a closed channel will cause a panic
 
 ### Performance
 - [ ] do not omit `defer`
