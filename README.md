@@ -119,6 +119,10 @@
   - `for i := range a` and `for i, v := range &a` doesn't make a copy of `a`
   - but `for i, v := range a` does
   - more: https://play.golang.org/p/4b181zkB1O
+- [ ] reading nonexistent key from map will not panic
+  - `value := map["no_key"]` will be zero value
+  - `value, ok := map["no_key"]` is much better
+
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't use flags, mutexes, channels or atomics
