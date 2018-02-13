@@ -209,6 +209,9 @@
   	return unsafe.Pointer(x ^ 0)
   }
   ```
+- [ ] for fastest atomic swap you might use this
+  `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
+
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
 - [ ] easy way to split test into different builds
