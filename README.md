@@ -285,3 +285,5 @@
   - https://godoc.org/net/http/httputil#DumpRequest
 - [ ] to get call stack we've `runtime.Caller` https://golang.org/pkg/runtime/#Caller
 - [ ] to marshal arbitrary JSON you can marshal to `map[string]interface{}{}`
+- [ ] configure your `CDPATH` so you can do `cd github.com/golang/go` from any directore
+  - add this line to your `bashrc`(or analogue) `export CDPATH=$CDPATH:$GOPATH/src`
