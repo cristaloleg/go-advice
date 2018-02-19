@@ -122,6 +122,9 @@
 - [ ] reading nonexistent key from map will not panic
   - `value := map["no_key"]` will be zero value
   - `value, ok := map["no_key"]` is much better
+- [ ] do not use raw params for file operation
+  - instead of an octal parameter like `os.MkdirAll(root, 0700)`
+  - use predefined constants of this type `os.FileMode`
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
