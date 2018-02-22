@@ -119,10 +119,19 @@
   - `for i := range a` and `for i, v := range &a` doesn't make a copy of `a`
   - but `for i, v := range a` does
   - more: https://play.golang.org/p/4b181zkB1O
+- [ ] reading nonexistent key from map will not panic
+  - `value := map["no_key"]` will be zero value
+  - `value, ok := map["no_key"]` is much better
+- [ ] do not use raw params for file operation
+  - instead of an octal parameter like `os.MkdirAll(root, 0700)`
+  - use predefined constants of this type `os.FileMode`
+
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
   - don't use flags, mutexes, channels or atomics
 - [ ] to block forever use `select{}`, omit channels, waiting for a signal
+- [ ] don't close in-channel, this is a responsibility of it's creator
+  - writing to a closed channel will cause a panic
 
 ### Performance
 - [ ] do not omit `defer`
@@ -203,6 +212,9 @@
   	return unsafe.Pointer(x ^ 0)
   }
   ```
+- [ ] for fastest atomic swap you might use this
+  `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
+
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
 - [ ] easy way to split test into different builds
@@ -279,3 +291,5 @@
   - https://godoc.org/net/http/httputil#DumpRequest
 - [ ] to get call stack we've `runtime.Caller` https://golang.org/pkg/runtime/#Caller
 - [ ] to marshal arbitrary JSON you can marshal to `map[string]interface{}{}`
+- [ ] configure your `CDPATH` so you can do `cd github.com/golang/go` from any directore
+  - add this line to your `bashrc`(or analogue) `export CDPATH=$CDPATH:$GOPATH/src`
