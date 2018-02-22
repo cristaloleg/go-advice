@@ -156,6 +156,16 @@
     - 但是 `for i, v := range a` 里面的就是 `a` 的副本
     - 更多: https://play.golang.org/p/4b181zkB1O
 
+- [ ] 从 map 读取一个不存在的 key 将不会 panic
+  
+    - `value := map["no_key"]` 将得到一个 0 值
+    - `value, ok := map["no_key"]` 更好
+
+- [ ] 不要使用原始参数进行文件操作
+  
+    - 而不是一个八进制参数 `os.MkdirAll(root, 0700)`
+    - 使用此类型的预定义常量 `os.FileMode`
+
 ### 并发 ###
 
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
@@ -163,6 +173,9 @@
     - 不要用 flags, mutexes, channels or atomics
 
 - [ ] 永远不要使用 `select{}`, 省略通道， 等待信号
+- [ ] 不要在 channel 里关闭，这是它的创作者的责任。
+   
+    - 往一个关闭的 channel 会引起 panic 
 
 ### 性能 ###
 
@@ -275,6 +288,8 @@
     return unsafe.Pointer(x ^ 0)
   }
 ```
+
+- [ ] 对于最快的原子交换，你可以使用这个 `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
 
 ### 构建 ###
 
@@ -392,3 +407,7 @@
     - https://golang.org/pkg/runtime/#Caller
 
 - [ ] 要 marshal 任意的 JSON， 你可以 marshal 为 `map[string]interface{}{}`
+
+- [ ] 配置你的 `CDPATH` 以便你能在任何目录执行 `cd github.com/golang/go`
+  
+    - 添加这一行代码到 `bashrc`(或者其他类似的) `export CDPATH=$CDPATH:$GOPATH/src`
