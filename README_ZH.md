@@ -177,6 +177,10 @@
    
     - 往一个关闭的 channel 会引起 panic 
 
+- [ ] `math/rand` 中的 `func NewSource(seed int64) Source` 不是并发安全的，默认的 `lockedSource` 是并发安全的, see issue: https://github.com/golang/go/issues/3611
+  
+    - 更多: https://golang.org/pkg/math/rand/
+
 ### 性能 ###
 
 - [ ] 不要省略 `defer`

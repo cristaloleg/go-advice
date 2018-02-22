@@ -132,6 +132,8 @@
 - [ ] to block forever use `select{}`, omit channels, waiting for a signal
 - [ ] don't close in-channel, this is a responsibility of it's creator
   - writing to a closed channel will cause a panic
+- [ ] `func NewSource(seed int64) Source` in `math/rand` is not concurrency-safe. The default `lockedSource` is concurrency-safe, see issue: https://github.com/golang/go/issues/3611
+  - more: https://golang.org/pkg/math/rand/
 
 ### Performance
 - [ ] do not omit `defer`
