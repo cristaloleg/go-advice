@@ -202,6 +202,16 @@
     - 但是 `for i, v := range a` 里面的就是 `a` 的副本
     - 更多: https://play.golang.org/p/4b181zkB1O
 
+- [ ] 从 map 读取一个不存在的 key 将不会 panic
+  
+    - `value := map["no_key"]` 将得到一个 0 值
+    - `value, ok := map["no_key"]` 更好
+
+- [ ] 不要使用原始参数进行文件操作
+  
+    - 而不是一个八进制参数 `os.MkdirAll(root, 0700)`
+    - 使用此类型的预定义常量 `os.FileMode`
+
 ### 并发 ###
 
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
@@ -330,9 +340,12 @@
 ```
 
 - [ ] 对于最快的原子交换，你可以使用这个 `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
+<<<<<<< HEAD
 - [ ] 如果执行许多顺序读取或写入操作，请使用缓冲 I/O
 
    - 减少系统调用次数
+=======
+>>>>>>> add some advices
 
 ### 构建 ###
 
