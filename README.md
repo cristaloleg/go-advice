@@ -256,8 +256,8 @@
 - [ ] `go list` allows to find all direct and transitive dependencies
   - `go list -f '{{ .Imports }}' package`
   - `go list -f '{{ .Deps }}' package`
-- [ ] for fast benchmark comparison we've a `benchcmp` tool
-  - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+- [ ] for fast benchmark comparison we've a `benchstat` tool
+  - https://godoc.org/golang.org/x/perf/cmd/benchstat
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
