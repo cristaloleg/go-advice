@@ -359,9 +359,9 @@
     - `go list -f '{{ .Imports }}' package`
     - `go list -f '{{ .Deps }}' package`
 
-- [ ] 对于快速基准比较，我们有一个 `benchcmp` 工具。
+- [ ] 对于快速基准比较，我们有一个 `benchstat` 工具。
 
-    - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+    - https://godoc.org/golang.org/x/perf/cmd/benchstat
 
 ### Misc ###
 
