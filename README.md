@@ -125,6 +125,22 @@
 - [ ] do not use raw params for file operation
   - instead of an octal parameter like `os.MkdirAll(root, 0700)`
   - use predefined constants of this type `os.FileMode`
+- [ ] don't forget to specify a type for `iota`
+  - https://play.golang.org/p/mZZdMaI92cI
+  ```
+  const (
+    _ = iota
+    testvar         // will be int
+  )
+  ```
+   vs
+   ```
+  type myType int
+  const (
+    _ myType = iota
+    testvar         // will be myType
+  )```
+
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
