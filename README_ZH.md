@@ -166,6 +166,22 @@
     - 而不是一个八进制参数 `os.MkdirAll(root, 0700)`
     - 使用此类型的预定义常量 `os.FileMode`
 
+- [ ] 不要忘记为 `iota` 指定一种类型
+    - https://play.golang.org/p/mZZdMaI92cI
+    ```
+    const (
+      _ = iota
+      testvar         // testvar 将是 int 类型
+    )
+    ```
+     vs
+     ```
+    type myType int
+    const (
+      _ myType = iota
+      testvar         // testvar 将是 myType 类型
+    )```
+
 ### 并发 ###
 
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
