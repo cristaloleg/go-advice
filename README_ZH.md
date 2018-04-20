@@ -166,21 +166,27 @@
     - 而不是一个八进制参数 `os.MkdirAll(root, 0700)`
     - 使用此类型的预定义常量 `os.FileMode`
 
+
 - [ ] 不要忘记为 `iota` 指定一种类型
     - https://play.golang.org/p/mZZdMaI92cI
+    
     ```
     const (
       _ = iota
       testvar         // testvar 将是 int 类型
     )
     ```
-     vs
-     ```
+    
+    vs
+    
+    ```
     type myType int
     const (
       _ myType = iota
       testvar         // testvar 将是 myType 类型
-    )```
+    )
+    ```
+
 
 ### 并发 ###
 
@@ -375,9 +381,9 @@
     - `go list -f '{{ .Imports }}' package`
     - `go list -f '{{ .Deps }}' package`
 
-- [ ] 对于快速基准比较，我们有一个 `benchcmp` 工具。
+- [ ] 对于快速基准比较，我们有一个 `benchstat` 工具。
 
-    - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+    - https://godoc.org/golang.org/x/perf/cmd/benchstat
 
 ### Misc ###
 

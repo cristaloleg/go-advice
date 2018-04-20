@@ -125,6 +125,22 @@
 - [ ] do not use raw params for file operation
   - instead of an octal parameter like `os.MkdirAll(root, 0700)`
   - use predefined constants of this type `os.FileMode`
+- [ ] don't forget to specify a type for `iota`
+  - https://play.golang.org/p/mZZdMaI92cI
+  ```
+  const (
+    _ = iota
+    testvar         // will be int
+  )
+  ```
+   vs
+   ```
+  type myType int
+  const (
+    _ myType = iota
+    testvar         // will be myType
+  )```
+
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
@@ -256,8 +272,8 @@
 - [ ] `go list` allows to find all direct and transitive dependencies
   - `go list -f '{{ .Imports }}' package`
   - `go list -f '{{ .Deps }}' package`
-- [ ] for fast benchmark comparison we've a `benchcmp` tool
-  - https://godoc.org/golang.org/x/tools/cmd/benchcmp
+- [ ] for fast benchmark comparison we've a `benchstat` tool
+  - https://godoc.org/golang.org/x/perf/cmd/benchstat
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
