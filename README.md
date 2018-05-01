@@ -232,6 +232,8 @@
   ```
 - [ ] for fastest atomic swap you might use this
   `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
+- [ ] use buffered I/O if you do many sequential reads or writes
+  - to reduce number of syscalls
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
