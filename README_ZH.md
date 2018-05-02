@@ -148,7 +148,7 @@
 
 - [ ] 包装错误： http://github.com/pkg/errors
 
-    - 例如: `errors.Wrap(err, “additional message to a given error”)`
+    - 例如: `errors.Wrap(err, "additional message to a given error")`
 
 - [ ] 在 Go 里面要小心使用 `range`:
     
@@ -316,6 +316,9 @@
 ```
 
 - [ ] 对于最快的原子交换，你可以使用这个 `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
+- [ ] 如果执行许多顺序读取或写入操作，请使用缓冲 I/O
+
+   - 减少系统调用次数
 
 ### 构建 ###
 
