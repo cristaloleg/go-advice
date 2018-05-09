@@ -213,20 +213,25 @@
     - 使用此类型的预定义常量 `os.FileMode`
 
 - [ ] 不要忘记为 `iota` 指定一种类型
+    
     - https://play.golang.org/p/mZZdMaI92cI
-    ```
+    
+    ```go
     const (
       _ = iota
       testvar         // testvar 将是 int 类型
     )
     ```
-     vs
-     ```
+    vs
+
+    ```go
     type myType int
     const (
       _ myType = iota
       testvar         // testvar 将是 myType 类型
-    )```
+    )
+    ```
+
 
 ### 并发 ###
 
