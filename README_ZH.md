@@ -187,7 +187,7 @@
     )
     ```
 
-- [ ] 用 `_ = b[7] // 早期检查以确保下面的写入安全`
+- [ ] 用 `_ = b[7]` 为了早期检查以确保下面的写入安全
   - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
   
