@@ -170,7 +170,7 @@
 - [ ] 不要忘记为 `iota` 指定一种类型
     - https://play.golang.org/p/mZZdMaI92cI
     
-    ```
+    ```go
     const (
       _ = iota
       testvar         // testvar 将是 int 类型
@@ -179,7 +179,7 @@
     
     vs
     
-    ```
+    ```go
     type myType int
     const (
       _ myType = iota
@@ -187,6 +187,9 @@
     )
     ```
 
+- [ ] 用 `_ = b[7]` 为了早期检查以确保下面的写入安全
+  - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
+  - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
 
 ### 并发 ###
 
