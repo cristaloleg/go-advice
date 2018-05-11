@@ -114,7 +114,7 @@
   }
   ```
 - [ ] wrap errors with http://github.com/pkg/errors
-  - so: `errors.Wrap(err, “additional message to a given error”)`
+  - so: `errors.Wrap(err, "additional message to a given error")`
 - [ ] be careful with `range` in Go:
   - `for i := range a` and `for i, v := range &a` doesn't make a copy of `a`
   - but `for i, v := range a` does
@@ -234,6 +234,8 @@
   ```
 - [ ] for fastest atomic swap you might use this
   `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
+- [ ] use buffered I/O if you do many sequential reads or writes
+  - to reduce number of syscalls
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
