@@ -245,7 +245,7 @@
   - https://twitter.com/bbrodriges/status/873414658178396160
   - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
 - [ ] run `go format` on CI and compare diff
-  - this will ensure that everything was generated and commited
+  - this will ensure that everything was generated and committed
 - [ ] to run Travis-CI with the latest Go use `travis 1`
   - see more: https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
 - [ ] check if there are mistakes in code formatting `diff -u <(echo -n) <(gofmt -d .)`
