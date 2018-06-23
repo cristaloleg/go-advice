@@ -259,7 +259,7 @@
     }
   }
   ```
-- [ ] skip test deppending on architecture
+- [ ] skip test depending on architecture
   ```go
   if runtime.GOARM == "arm" {
     t.Skip("this doesn't work under ARM")
