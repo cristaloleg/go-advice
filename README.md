@@ -9,7 +9,7 @@
 - [Testing](#testing)
 - [Tools](#tools)
 - [Misc](#misc)
-    
+
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
@@ -33,15 +33,15 @@
 - [ ] use panic only in very specific situations, you have to handle error
 - [ ] don't use alias for enums 'cause this breaks type safety
   - https://play.golang.org/p/MGbeDwtXN3
-  - 
+  -
   ```go
   package main
   type Status = int
   type Format = int // remove `=` to have type safety
-  
+
   const A Status = 1
   const B Format = 1
-  
+
   func main() {
 	println(A == B)
   }
@@ -127,14 +127,14 @@
   - use predefined constants of this type `os.FileMode`
 - [ ] don't forget to specify a type for `iota`
   - https://play.golang.org/p/mZZdMaI92cI
-  ```
+  ```go
   const (
     _ = iota
     testvar         // will be int
   )
   ```
    vs
-   ```
+  ```go
   type myType int
   const (
     _ myType = iota
@@ -221,12 +221,11 @@
   ```
 - [ ] to hide a pointer from escape analysis you might carefully(!!!) use this func:
   - source: https://go-review.googlesource.com/c/go/+/86976
-  ```
+  ```go
   // noescape hides a pointer from escape analysis.  noescape is
   // the identity function but escape analysis doesn't think the
   // output depends on the input. noescape is inlined and currently
   // compiles down to zero instructions.
-  //go:nosplit
   func noescape(p unsafe.Pointer) unsafe.Pointer {
   	x := uintptr(p)
   	return unsafe.Pointer(x ^ 0)
