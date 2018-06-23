@@ -278,6 +278,7 @@
   - `go list -f '{{ .Deps }}' package`
 - [ ] for fast benchmark comparison we've a `benchstat` tool
   - https://godoc.org/golang.org/x/perf/cmd/benchstat
+- [ ] [go-critic](https://github.com/go-critic/go-critic) linter enforces several advices from this document
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
