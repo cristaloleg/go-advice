@@ -9,7 +9,7 @@
 - [Testing](#testing)
 - [Tools](#tools)
 - [Misc](#misc)
-    
+
 ### Code
 - [ ] go fmt your code, make everyone happier
 - [ ] multiple if statements can be collapsed into switch
@@ -33,15 +33,15 @@
 - [ ] use panic only in very specific situations, you have to handle error
 - [ ] don't use alias for enums 'cause this breaks type safety
   - https://play.golang.org/p/MGbeDwtXN3
-  - 
+  -
   ```go
   package main
   type Status = int
   type Format = int // remove `=` to have type safety
-  
+
   const A Status = 1
   const B Format = 1
-  
+
   func main() {
 	println(A == B)
   }
@@ -54,7 +54,7 @@
 - [ ] use backquote(\`) for multiline strings
 - [ ] skip unused param with _
   ```go
-  func f(a int, _ string() {}
+  func f(a int, _ string) {}
   ```
 - [ ] If you are comparing timestamps, use `time.Before` or `time.After`. Don't use `time.Sub` to get a duration and then check its value.
 - [ ] always pass context as a first param to a func with a `ctx` name
@@ -127,19 +127,21 @@
   - use predefined constants of this type `os.FileMode`
 - [ ] don't forget to specify a type for `iota`
   - https://play.golang.org/p/mZZdMaI92cI
-  ```
+  ```go
   const (
     _ = iota
     testvar         // will be int
   )
   ```
    vs
-   ```
+  ```go
   type myType int
   const (
     _ myType = iota
     testvar         // will be myType
-  )```
+  )
+  ```
+
 - [ ] use `_ = b[7]` for early bounds check to guarantee safety of writes below
   - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
@@ -221,12 +223,11 @@
   ```
 - [ ] to hide a pointer from escape analysis you might carefully(!!!) use this func:
   - source: https://go-review.googlesource.com/c/go/+/86976
-  ```
+  ```go
   // noescape hides a pointer from escape analysis.  noescape is
   // the identity function but escape analysis doesn't think the
   // output depends on the input. noescape is inlined and currently
   // compiles down to zero instructions.
-  //go:nosplit
   func noescape(p unsafe.Pointer) unsafe.Pointer {
   	x := uintptr(p)
   	return unsafe.Pointer(x ^ 0)
@@ -245,7 +246,7 @@
   - https://twitter.com/bbrodriges/status/873414658178396160
   - `CGO_ENABLED=0 go build -ldflags="-s -w" app.go && tar C app | docker import - myimage:latest`
 - [ ] run `go format` on CI and compare diff
-  - this will ensure that everything was generated and commited
+  - this will ensure that everything was generated and committed
 - [ ] to run Travis-CI with the latest Go use `travis 1`
   - see more: https://github.com/travis-ci/travis-build/blob/master/public/version-aliases/go.json
 - [ ] check if there are mistakes in code formatting `diff -u <(echo -n) <(gofmt -d .)`
@@ -260,7 +261,7 @@
     }
   }
   ```
-- [ ] skip test deppending on architecture
+- [ ] skip test depending on architecture
   ```go
   if runtime.GOARM == "arm" {
     t.Skip("this doesn't work under ARM")
@@ -278,6 +279,7 @@
   - `go list -f '{{ .Deps }}' package`
 - [ ] for fast benchmark comparison we've a `benchstat` tool
   - https://godoc.org/golang.org/x/perf/cmd/benchstat
+- [ ] [go-critic](https://github.com/go-critic/go-critic) linter enforces several advices from this document
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
