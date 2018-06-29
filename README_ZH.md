@@ -71,7 +71,7 @@
 - [ ] 用 `_` 来跳过不用的参数
 
 ```go
-  func f(a int, _ string() {}
+  func f(a int, _ string) {}
 ```
 
 - [ ] 如果你是比较时间戳，请使用 `time.Before` 或 `time.After` ，不要使用 `time.Sub` 来获得 duration (持续时间)，然后检查它的值。
@@ -390,6 +390,8 @@
 - [ ] 对于快速基准比较，我们有一个 `benchstat` 工具。
 
     - https://godoc.org/golang.org/x/perf/cmd/benchstat
+
+- [ ] [go-critic](https://github.com/go-critic/go-critic) linter 从这个文件中强制执行几条建议
 
 ### Misc ###
 
