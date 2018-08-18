@@ -1,5 +1,7 @@
 # Go-advices
 
+(Some of advices are implemented in [go-critic](https://github.com/go-critic/go-critic) )
+
 ## Contents
 
 - [Code](#code)
