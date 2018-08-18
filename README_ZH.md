@@ -2,6 +2,8 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
+(有些建议在 [go-critic](https://github.com/go-critic/go-critic) 中实现)
+
 - [Go-advices 中文版本](#go-advices-%E4%B8%AD%E6%96%87%E7%89%88%E6%9C%AC)
     - [代码](#%E4%BB%A3%E7%A0%81)
     - [并发](#%E5%B9%B6%E5%8F%91)
