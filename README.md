@@ -2,6 +2,8 @@
 
 (Some of advices are implemented in [go-critic](https://github.com/go-critic/go-critic) )
 
+[中文版](./README_ZH.md)
+
 ## Contents
 
 - [Code](#code)
