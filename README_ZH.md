@@ -193,6 +193,9 @@
   - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
 
+- [ ] 不要在你不拥有的结构上使用 `encoding / gob`
+  - 它不受新添加或重新排序字段的保护
+
 ### 并发 ###
 
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
