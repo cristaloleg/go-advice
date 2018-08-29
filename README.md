@@ -149,6 +149,8 @@
 - [ ] use `_ = b[7]` for early bounds check to guarantee safety of writes below
   - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
+- [ ] don’t use `encoding/gob` on structs you don’t own
+  - it's not protected from newly added or reordered fields
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
