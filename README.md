@@ -243,6 +243,17 @@
   `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
 - [ ] use buffered I/O if you do many sequential reads or writes
   - to reduce number of syscalls
+- [ ] there are 2 ways to clear a map:
+  - reuse map memory
+  ```go
+	for k := range m {
+		delete(m, k)
+	}
+  ```
+  - allocate new
+  ```go
+	m = make(map[int]int)
+  ```
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
