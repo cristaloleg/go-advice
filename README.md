@@ -323,3 +323,5 @@
 - [ ] to marshal arbitrary JSON you can marshal to `map[string]interface{}{}`
 - [ ] configure your `CDPATH` so you can do `cd github.com/golang/go` from any directore
   - add this line to your `bashrc`(or analogue) `export CDPATH=$CDPATH:$GOPATH/src`
+- [ ] simple random element from a slice
+  - `[]string{"one", "two", "three"}[rand.Intn(3)]`
