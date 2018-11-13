@@ -52,7 +52,7 @@
   ```
 - [ ] if you're going to omit returning params, do it explicitly
   - so prefer this ` _ = f()` to this `f()`
-- [ ] we've a short form for slice initialization `a := []T{}`
+- [ ] the short form for slice initialization is `a := []T{}`
 - [ ] iterate over array or slice using range loop
   -  instead of `for i := 3; i < 7; i++ {...}` prefer `for _, c := range a[3:7] {...}`
 - [ ] use backquote(\`) for multiline strings
@@ -297,6 +297,7 @@
 - [ ] for fast benchmark comparison we've a `benchstat` tool
   - https://godoc.org/golang.org/x/perf/cmd/benchstat
 - [ ] [go-critic](https://github.com/go-critic/go-critic) linter enforces several advices from this document
+- [ ] `go mod why -m <module>` tells us why a particular module is in the `go.mod` file
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
