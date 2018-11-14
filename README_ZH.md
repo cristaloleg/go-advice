@@ -64,7 +64,7 @@
 
     - ` _ = f()` 比 `f()` 更好
 
-- [ ] 我们用 `a := []T{}` 来简短初始化 slice
+- [ ] 我们用 `a := []T{}` 来简单初始化 slice
 - [ ] 用 range 循环来进行数组或 slice 的迭代
 
     -  `for _, c := range a[3:7] {...}` 比 `for i := 3; i < 7; i++ {...}` 更好
@@ -128,7 +128,6 @@
     // ...
   }
 ```
-
 - [ ] 用 `%+v` 来打印数据的比较全的信息
 - [ ] 注意空结构 `struct{}`, 看 issue: https://github.com/golang/go/issues/23440
     
@@ -194,7 +193,44 @@
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
 
 - [ ] 不要在你不拥有的结构上使用 `encoding / gob`
+
   - 它不受新添加或重新排序字段的保护
+
+- [ ] 在 Go 里面要小心使用 `range`:
+    
+    - `for i := range a` and `for i, v := range &a` ，都不是 `a` 的副本
+    - 但是 `for i, v := range a` 里面的就是 `a` 的副本
+    - 更多: https://play.golang.org/p/4b181zkB1O
+
+- [ ] 从 map 读取一个不存在的 key 将不会 panic
+  
+    - `value := map["no_key"]` 将得到一个 0 值
+    - `value, ok := map["no_key"]` 更好
+
+- [ ] 不要使用原始参数进行文件操作
+  
+    - 而不是一个八进制参数 `os.MkdirAll(root, 0700)`
+    - 使用此类型的预定义常量 `os.FileMode`
+
+- [ ] 不要忘记为 `iota` 指定一种类型
+    
+    - https://play.golang.org/p/mZZdMaI92cI
+    
+    ```go
+    const (
+      _ = iota
+      testvar         // testvar 将是 int 类型
+    )
+    ```
+    vs
+
+    ```go
+    type myType int
+    const (
+      _ myType = iota
+      testvar         // testvar 将是 myType 类型
+    )
+    ```
 
 ### 并发 ###
 
@@ -328,6 +364,22 @@
 
    - 减少系统调用次数
 
+- [ ] 有 2 种方法清空一个 map：
+
+  - 重用 map 内存
+
+```go
+  for k := range m {
+    delete(m, k)
+  }
+```
+
+  - 分配新的
+
+```go
+  m = make(map[int]int)
+```
+
 ### 构建 ###
 
 - [ ] 用这个命令 `go build -ldflags="-s -w" ...` 去掉你的二进制文件
@@ -398,6 +450,8 @@
 
 - [ ] [go-critic](https://github.com/go-critic/go-critic) linter 从这个文件中强制执行几条建议
 
+- [ ] `go mod why -m <module>` 告诉我们为什么特定的模块是在 `go.mod` 文件中。
+
 ### Misc ###
 
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
@@ -450,3 +504,7 @@
 - [ ] 配置你的 `CDPATH` 以便你能在任何目录执行 `cd github.com/golang/go`
   
     - 添加这一行代码到 `bashrc`(或者其他类似的) `export CDPATH=$CDPATH:$GOPATH/src`
+
+- [ ] 从一个 slice 生成简单的随机元素
+
+    - `[]string{"one", "two", "three"}[rand.Intn(3)]`
