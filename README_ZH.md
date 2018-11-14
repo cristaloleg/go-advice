@@ -537,6 +537,8 @@ type Request struct {
 
 - [ ] `go mod why -m <module>` 告诉我们为什么特定的模块是在 `go.mod` 文件中。
 
+- [ ] `go mod why -m <module>` 告诉我们为什么特定的模块是在 `go.mod` 文件中。
+
 ### Misc ###
 
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
