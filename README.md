@@ -334,6 +334,7 @@
   - https://godoc.org/golang.org/x/perf/cmd/benchstat
 - [ ] [go-critic](https://github.com/go-critic/go-critic) linter enforces several advices from this document
 - [ ] `go mod why -m <module>` tells us why a particular module is in the `go.mod` file
+- [ ] `GOGC=off go build ...` should speed up your builds [source](https://twitter.com/mvdan_/status/1107579946501853191)
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
