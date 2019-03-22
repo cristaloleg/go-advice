@@ -169,6 +169,17 @@
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
 - [ ] don’t use `encoding/gob` on structs you don’t own
   - it's not protected from newly added or reordered fields
+- [ ] don't depend on the evaluation order, especially in return statements
+```go
+// NOT CLEAR
+return res, json.Unmarshal(b, &res)
+
+// CLEAR
+if err := json.Unmarshal(b, &res); err != nil {
+	return res, err
+}
+return res, nil
+```
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
