@@ -175,10 +175,8 @@
 return res, json.Unmarshal(b, &res)
 
 // CLEAR
-if err := json.Unmarshal(b, &res); err != nil {
-	return res, err
-}
-return res, nil
+err := json.Unmarshal(b, &res)
+return res, err
 ```
 
 ### Concurrency
