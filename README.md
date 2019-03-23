@@ -187,6 +187,7 @@ return res, err
   - writing to a closed channel will cause a panic
 - [ ] `func NewSource(seed int64) Source` in `math/rand` is not concurrency-safe. The default `lockedSource` is concurrency-safe, see issue: https://github.com/golang/go/issues/3611
   - more: https://golang.org/pkg/math/rand/
+- [ ] when you need an atomic value of a custom type use [atomic.Value](https://godoc.org/sync/atomic#Value)
 
 ### Performance
 - [ ] do not omit `defer`
