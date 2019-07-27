@@ -178,6 +178,13 @@ return res, json.Unmarshal(b, &res)
 err := json.Unmarshal(b, &res)
 return res, err
 ```
+- [ ] to prevent structs comparison add an empty field of `func` type
+```go
+type Point struct {
+	_ [0]func()	// unexported, zero-width non-comparable field
+	X, Y float64
+}
+```
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
