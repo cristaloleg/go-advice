@@ -185,6 +185,8 @@ type Point struct {
 	X, Y float64
 }
 ```
+- [ ] Prefer `http.HandlerFunc` over `http.Handler`
+  - to use the 1st one you just need a func, for the 2nd you need a type
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
