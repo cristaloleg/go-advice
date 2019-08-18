@@ -354,6 +354,8 @@ type Point struct {
 - [ ] [go-critic](https://github.com/go-critic/go-critic) linter enforces several advices from this document
 - [ ] `go mod why -m <module>` tells us why a particular module is in the `go.mod` file
 - [ ] `GOGC=off go build ...` should speed up your builds [source](https://twitter.com/mvdan_/status/1107579946501853191)
+- [ ] The memory profiler records one allocation every 512Kbytes. You can increase the rate via the `GODEBUG` environment variable to see more details in your profile.
+  - by https://twitter.com/bboreham/status/1105036740253937664
 
 ### Misc
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
