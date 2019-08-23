@@ -9,6 +9,7 @@
 - [Code](#code)
 - [Concurrency](#concurrency)
 - [Performance](#performance)
+- [Modules](#modules)
 - [Build](#build)
 - [Testing](#testing)
 - [Tools](#tools)
@@ -305,6 +306,10 @@ type Point struct {
 ```go
 	m = make(map[int]int)
 ```
+
+### Modules
+- [ ] if you want to test that `go.mod` (and `go.sum`) is up to date in CI
+  https://blog.urth.org/2019/08/13/testing-go-mod-tidiness-in-ci/
 
 ### Build
 - [ ] strip your binaries with this command `go build -ldflags="-s -w" ...`
