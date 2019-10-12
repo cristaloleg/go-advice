@@ -311,25 +311,12 @@ vs
 
 - [ ] 对于最快的原子交换，你可以使用这个 `m := (*map[int]int)(atomic.LoadPointer(&ptr))`
 - [ ] 如果执行许多顺序读取或写入操作，请使用缓冲 I/O
+
    - 减少系统调用次数
-- [ ] 有 2 种方法清空一个 map：
-  - 重用 map 内存
-
-```go
-  for k := range m {
-    delete(m, k)
-  }
-```
-
-  - 分配新的
-
-```go
-  m = make(map[int]int)
-```
 
 - [ ] 有 2 种方法清空一个 map：
 
-  - 重用 map 内存
+  - 重用 map 内存 （但是也要注意 m 的回收）
 
 ```go
   for k := range m {
