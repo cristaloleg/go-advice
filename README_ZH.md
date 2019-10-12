@@ -329,7 +329,6 @@ vs
 
 - [ ] 如果你想在 CI 中测试 `go.mod` （和 `go.sum`）是否是最新 https://blog.urth.org/2019/08/13/testing-go-mod-tidiness-in-ci/
 
-
 ### 构建 ###
 
 - [ ] 用这个命令 `go build -ldflags="-s -w" ...` 去掉你的二进制文件
