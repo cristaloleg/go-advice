@@ -8,6 +8,7 @@
     - [代码](#%E4%BB%A3%E7%A0%81)
     - [并发](#%E5%B9%B6%E5%8F%91)
     - [性能](#%E6%80%A7%E8%83%BD)
+    - [模块](#%E6%A8%A1%E5%9D%97)
     - [构建](#%E6%9E%84%E5%BB%BA)
     - [测试](#%E6%B5%8B%E8%AF%95)
     - [工具](#%E5%B7%A5%E5%85%B7)
@@ -23,6 +24,7 @@
 - [ ] 多个 if 语句可以折叠成 switch
 - [ ] 用 `chan struct{}` 来传递信号, `chan bool` 表达的不够清楚
 - [ ] `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
+- [ ] 用 `var foo time.Duration` 代替 `var fooMillis int64` 会更好
 - [ ] 总是把 for-select 换成一个函数
 - [ ] 分组定义 `const` 类型声明和 `var` 逻辑类型声明
 - [ ] 每个阻塞或者 IO 函数操作应该是可取消的或者至少是可超时的
@@ -137,87 +139,74 @@
 
 - [ ] 包装错误： http://github.com/pkg/errors
     - 例如: `errors.Wrap(err, "additional message to a given error")`
+
 - [ ] 在 Go 里面要小心使用 `range`:
+
     - `for i := range a` and `for i, v := range &a` ，都不是 `a` 的副本
     - 但是 `for i, v := range a` 里面的就是 `a` 的副本
     - 更多: https://play.golang.org/p/4b181zkB1O
+
 - [ ] 从 map 读取一个不存在的 key 将不会 panic
+  
     - `value := map["no_key"]` 将得到一个 0 值
     - `value, ok := map["no_key"]` 更好
+
 - [ ] 不要使用原始参数进行文件操作
+  
     - 而不是一个八进制参数 `os.MkdirAll(root, 0700)`
     - 使用此类型的预定义常量 `os.FileMode`
+
 - [ ] 不要忘记为 `iota` 指定一种类型
     - https://play.golang.org/p/mZZdMaI92cI
 
-    ```go
+```go
     const (
       _ = iota
       testvar         // testvar 将是 int 类型
     )
-    ```
+```
 
-    vs
+vs
 
-    ```go
+```go
     type myType int
     const (
       _ myType = iota
       testvar         // testvar 将是 myType 类型
     )
-    ```
+```
 
 - [ ] 用 `_ = b[7]` 为了早期检查以确保下面的写入安全
   - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
   - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
-- [ ] 不要在你不拥有的结构上使用 `encoding / gob`
-
+- [ ] 不要在你不拥有的结构上使用 `encoding/gob`
   - 它不受新添加或重新排序字段的保护
 - [ ] 不要依赖求值顺序，尤其是在返回值的情况下
 
 ```go
   // NOT CLEAR
   return res, json.Unmarshal(b, &res)
+
   // CLEAR
   err := json.Unmarshal(b, &res)
   return res, err
 ```
 
-- [ ] 在 Go 里面要小心使用 `range`:
-    
-    - `for i := range a` and `for i, v := range &a` ，都不是 `a` 的副本
-    - 但是 `for i, v := range a` 里面的就是 `a` 的副本
-    - 更多: https://play.golang.org/p/4b181zkB1O
+- [ ] 为了防止结构比较，添加 `func` 类型的空字段
 
-- [ ] 从 map 读取一个不存在的 key 将不会 panic
-  
-    - `value := map["no_key"]` 将得到一个 0 值
-    - `value, ok := map["no_key"]` 更好
+```go
+  type Point struct {
+    _ [0]func() // unexported, zero-width non-comparable field
+    X, Y float64
+  }
+```
 
-- [ ] 不要使用原始参数进行文件操作
-  
-    - 而不是一个八进制参数 `os.MkdirAll(root, 0700)`
-    - 使用此类型的预定义常量 `os.FileMode`
-
-- [ ] 不要忘记为 `iota` 指定一种类型
-    
-    - https://play.golang.org/p/mZZdMaI92cI
-    
-    ```go
-    const (
-      _ = iota
-      testvar         // testvar 将是 int 类型
-    )
-    ```
-    vs
-
-    ```go
-    type myType int
-    const (
-      _ myType = iota
-      testvar         // testvar 将是 myType 类型
-    )
-    ```
+- [ ] `http.HandlerFunc` 比 `http.Handler` 更好
+  - 用 `http.HandlerFunc` 你仅需要一个 func，`http.Handler` 需要一个类型。
+- [ ] 移动 `defer` 到顶部
+  - 代码可读性更好和在函数结束时有什么被调用也更清楚了。
+- [ ] JavaScript 解析整数为浮点数并且你的 int64 可能溢出
+  - 用 `json:"id,string"` 代替
 
 ### 并发 ###
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
@@ -227,6 +216,7 @@
     - 往一个关闭的 channel 会引起 panic 
 - [ ] `math/rand` 中的 `func NewSource(seed int64) Source` 不是并发安全的，默认的 `lockedSource` 是并发安全的, see issue: https://github.com/golang/go/issues/3611
     - 更多: https://golang.org/pkg/math/rand/
+- [ ] 当你需要一个自定义类型的 atomic 值时，可以使用 [atomic.Value](https://godoc.org/sync/atomic#Value)
 
 ### 性能 ###
 - [ ] 不要省略 `defer`
@@ -353,6 +343,10 @@
   m = make(map[int]int)
 ```
 
+### 模块
+
+- [ ] 如果你想在 CI 中测试 `go.mod` （和 `go.sum`）是否是最新 https://blog.urth.org/2019/08/13/testing-go-mod-tidiness-in-ci/
+
 ### 构建 ###
 
 - [ ] 用这个命令 `go build -ldflags="-s -w" ...` 去掉你的二进制文件
@@ -404,8 +398,8 @@
 - [ ] [go-critic](https://github.com/go-critic/go-critic) linter 从这个文件中强制执行几条建议
 - [ ] `go mod why -m <module>` 告诉我们为什么特定的模块在 `go.mod` 文件中。
 - [ ] `GOGC=off go build ...` 应该会加快构建速度 [source](https://twitter.com/mvdan_/status/1107579946501853191)
-
-- [ ] `go mod why -m <module>` 告诉我们为什么特定的模块是在 `go.mod` 文件中。
+- [ ] 内存分析器每 512KB 记录一次分配。你能通过 `GODEBUG` 环境变量增加比例，来查看你的文件的更多详细信息。
+  - 来源：https://twitter.com/bboreham/status/1105036740253937664
 
 ### Misc ###
 
