@@ -27,7 +27,7 @@
 - [ ] 分组定义 `const` 类型声明和 `var` 逻辑类型声明
 - [ ] 每个阻塞或者 IO 函数操作应该是可取消的或者至少是可超时的
 - [ ] 为整型常量值实现 `Stringer` 接口
-    - https://godoc.org/golang.org/x/tools/cmd/stringer）
+    - https://godoc.org/golang.org/x/tools/cmd/stringer
 - [ ] 用 defer 来检查你的错误
 
 ```go
