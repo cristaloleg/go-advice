@@ -286,13 +286,6 @@ vs
     - 了解更多: https://github.com/golang/go/blob/master/src/sync/map.go#L12
 - [ ] 在 `sync.Pool` 中分配内存存储非指针数据
     - 了解更多: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
-- [ ] 正则表达式是互斥的
-    - 为了避免在并行程序性能下降，使用复制:
-  
-```go
-  re, err := regexp.Compile(pattern)
-  re2 := re.Copy()
-```
 
 - [ ] 为了隐藏逃生分析的指针，你可以小心使用这个函数：:
     - 来源: https://go-review.googlesource.com/c/go/+/86976
