@@ -271,13 +271,6 @@ type Point struct {
   - more: https://github.com/golang/go/blob/master/src/sync/map.go#L12
 - [ ] storing non-pointer values in `sync.Pool` allocates memory
   - more: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
-- [ ] regular expressions are mutexed
-  - to avoid performance degradation in concurrent programs make a copy:
-
-```go
-  re, err := regexp.Compile(pattern)
-  re2 := re.Copy()
-```
 
 - [ ] to hide a pointer from escape analysis you might carefully(!!!) use this func:
   - source: https://go-review.googlesource.com/c/go/+/86976
