@@ -1,6 +1,6 @@
 # Go-advice
 
-(Some of advice are implemented in [go-critic](https://github.com/go-critic/go-critic) )
+(Some of advice are implemented in [go-critic](https://github.com/go-critic/go-critic))
 
 [中文版](./README_ZH.md)
 
