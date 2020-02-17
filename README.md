@@ -1,6 +1,6 @@
 # Go-advice
 
-(Some of advice are implemented in [go-critic](https://github.com/go-critic/go-critic))
+(Some of advices are implemented in [go-critic](https://github.com/go-critic/go-critic) )
 
 [中文版](./README_ZH.md)
 
@@ -60,13 +60,102 @@ Author: Dave Cheney
 See more: https://the-zen-of-go.netlify.com/
 
 ### Code
-- [ ] go fmt your code, make everyone happier
-- [ ] multiple if statements can be collapsed into switch
-- [ ] use `chan struct{}` to pass signal, `chan bool` makes it less clear
-- [ ] prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
-- [ ] it's better to use `var foo time.Duration` instead of `var fooMillis int64` 
-- [ ] always wrap for-select idiom to a function
-- [ ] group `const` declarations by type and `var` by logic and/or type
+
+#### Always `go fmt` your code.
+
+Community uses the official Go format, do not reinvent the wheel.
+
+Try to reduce code entropy. This will help everyone to make code easy to read.
+
+#### Multiple if-else statements can be collapsed into a switch
+
+```go
+// NOT BAD
+if foo() {
+    // ...
+} else if bar == baz {
+    // ...
+} else {
+    // ...
+}
+
+// BETTER
+switch {
+case foo():
+    // ...
+case bar == baz:
+    // ...
+default:
+    // ...
+}
+```
+
+#### To pass a signal prefer `chan struct{}` instead of `chan bool`.
+
+When you see a defenition of `chan bool` in a structure, sometimes it's not that easy to understand how this value will be used, example:
+```go
+type Service struct {
+    deleteCh chan bool // what does this bool mean? 
+}
+```
+
+But we can make it more clear by changing it to `chan struct{}` which explicitly says: we do not care about value (it's always a `struct{}`), we care about an event that might occure, example:
+```go
+type Service struct {
+    deleteCh chan struct{} // ok, if event than delete something.
+}
+```
+
+#### Prefer `30 * time.Second` instead of `time.Duration(30) * time.Second`
+
+You don't need to wrap untyped const in a type, compiler will figure it out. Also prefer to move const to the first place:
+```go
+// BAD
+delay := time.Second * 60 * 24 * 60
+
+// VERY BAD
+delay := 60 * time.Second * 60 * 24
+
+// GOOD
+delay := 24 * 60 * 60 * time.Second
+```
+
+#### Use `time.Duration` instead of `int64` + variable name
+
+```go
+// BAD
+var delayMillis int64 = 15000
+
+// GOOD
+var delay time.Duration = 15 * time.Second
+```
+
+#### Group `const` declarations by type and `var` by logic and/or type
+
+```go
+// BAD
+const (
+    foo = 1
+    bar = 2
+    message = "warn message"
+)
+
+// MOSTLY BAD
+const foo = 1
+const bar = 2
+const message = "warn message"
+
+// GOOD
+const (
+    foo = 1
+    bar = 2
+)
+
+const message = "warn message"
+```
+
+This pattern works for `var` too.
+
 - [ ] every blocking or IO function call should be cancelable or at least timeoutable
 - [ ] implement `Stringer` interface for integers const values
   - https://godoc.org/golang.org/x/tools/cmd/stringer
