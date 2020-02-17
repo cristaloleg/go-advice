@@ -6,8 +6,8 @@
 
 ## Contents
 
-- [Go Proverbs](Go Proverbs)
-- [The Zen of Go](The Zen of Go)
+- [Go Proverbs](#go-proverbs)
+- [The Zen of Go](#the-zen-of-go)
 - [Code](#code)
 - [Concurrency](#concurrency)
 - [Performance](#performance)
