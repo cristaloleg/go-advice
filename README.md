@@ -1,4 +1,4 @@
-# Go-advices
+# Go-advice
 
 (Some of advices are implemented in [go-critic](https://github.com/go-critic/go-critic) )
 
