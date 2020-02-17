@@ -40,7 +40,7 @@
 - Don't panic.
 
 Author: Rob Pike
-Source: https://go-proverbs.github.io/
+See more: https://go-proverbs.github.io/
 
 ### The Zen of Go
 
@@ -57,8 +57,7 @@ Source: https://go-proverbs.github.io/
 - Maintainability counts
 
 Author: Dave Cheney
-Source: https://the-zen-of-go.netlify.com/
-
+See more: https://the-zen-of-go.netlify.com/
 
 ### Code
 - [ ] go fmt your code, make everyone happier
@@ -210,33 +209,47 @@ Source: https://the-zen-of-go.netlify.com/
   )
 ```
 
-- [ ] use `_ = b[7]` for early bounds check to guarantee safety of writes below
-  - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
-  - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
-- [ ] don’t use `encoding/gob` on structs you don’t own
-  - it's not protected from newly added or reordered fields
-- [ ] don't depend on the evaluation order, especially in return statements
+#### Don’t use `encoding/gob` on structs you don’t own.
+
+At some point structure may change and you might miss this. As a result this might cause a hard to find bug.
+
+#### Don't depend on the evaluation order, especially in a return statement.
+
 ```go
-// NOT CLEAR
+// BAD
 return res, json.Unmarshal(b, &res)
 
-// CLEAR
+// GOOD
 err := json.Unmarshal(b, &res)
 return res, err
 ```
-- [ ] to prevent structs comparison add an empty field of `func` type
+
+#### To prevent structs comparison add an empty field of `func` type
+
 ```go
 type Point struct {
 	_ [0]func()	// unexported, zero-width non-comparable field
 	X, Y float64
 }
 ```
-- [ ] Prefer `http.HandlerFunc` over `http.Handler`
-  - to use the 1st one you just need a func, for the 2nd you need a type
-- [ ] Move `defer` to the top
-  - this improves code readability and makes clear what will be invoked at the end of a function
-- [ ] JavaScript parses integers as floats and your int64 might overflow
-  - Use `json:"id,string"` instead
+
+#### Prefer `http.HandlerFunc` over `http.Handler`
+
+To use the 1st one you just need a func, for the 2nd you need a type.
+
+#### Move `defer` to the top
+
+This improves code readability and makes clear what will be invoked at the end of a function.
+
+#### JavaScript parses integers as floats and your int64 might overflow.
+
+Use `json:"id,string"` instead.
+
+```go
+type Request struct {
+	ID int64 `json:"id,string"`
+}
+```
 
 ### Concurrency
 - [ ] best candidate to make something once in a thread-safe way is `sync.Once`
@@ -263,6 +276,8 @@ type Point struct {
     	}
     }
 ```
+
+#### To help compiler to remove bound checks see this pattern `_ = b[7]`
 
 - [ ] `time.Time` has pointer field `time.Location` and this is bad for go GC
   - it's relevant only for big number of `time.Time`, use timestamp instead
