@@ -2,9 +2,9 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-(有些建议在 [go-critic](https://github.com/go-critic/go-critic) 中实现)
-
-- [Go-advices 中文版本](#go-advices-%E4%B8%AD%E6%96%87%E7%89%88%E6%9C%AC)
+- [Go-advice 中文版本](#go-advice-%E4%B8%AD%E6%96%87%E7%89%88%E6%9C%AC)
+    - [Go 箴言](#go-%E7%AE%B4%E8%A8%80)
+    - [Go 之禅](#go-%E4%B9%8B%E7%A6%85)
     - [代码](#%E4%BB%A3%E7%A0%81)
     - [并发](#%E5%B9%B6%E5%8F%91)
     - [性能](#%E6%80%A7%E8%83%BD)
@@ -16,9 +16,53 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Go-advices 中文版本 #
+# Go-advice 中文版本 #
+
+### Go 箴言
+
+- 不要通过共享内存进行通信，通过通信共享内存
+- 并发不是并行
+- 通道编排；互斥体序列化
+- 接口越大，抽象就越弱
+- 使零值有用
+- `interface{}` 什么也没说
+- Gofmt 的风格不是人们最喜欢的，但 gofmt 是每个人的最爱
+- 一点点复制比一点点依赖更好
+- 系统调用必须始终使用构建标记进行保护
+- 必须始终使用构建标记保护 Cgo
+- Cgo 不是 Go
+- 对于不安全的 package，没有任何保证
+- 清楚比聪明更好
+- 反射永远不清晰
+- 错误就是价值观
+- 不要只检查错误，还要优雅地处理它们
+- 设计架构，命名组件，记录细节
+- 文档是供用户使用的
+- 不要恐慌
+
+Author: Rob Pike
+See more: https://go-proverbs.github.io/
+
+### Go 之禅
+
+- 每个 package 实现单一的目的
+- 显式处理错误
+- 尽早返回，而不是使用深嵌套
+- 让调用者选择并发
+- 在启动一个 goroutine 时，需要知道何时它会停止
+- 避免 package 级别的状态
+- 简单很重要
+- 编写测试以锁定 package API 的行为
+- 如果你觉得慢，先编写 benchmark 来证明
+- 节制是一种美德
+- 可维护性
+
+Author: Dave Cheney
+See more: https://the-zen-of-go.netlify.com/
 
 ### 代码 ###
+
+#### Always `go fmt` your code.
 
 - [ ] 使用 `go fmt` / `gofmt` 格式化你的代码, 让大家都开心
 - [ ] 多个 if 语句可以折叠成 switch
@@ -27,6 +71,104 @@
 - [ ] 用 `var foo time.Duration` 代替 `var fooMillis int64` 会更好
 - [ ] 总是把 for-select 换成一个函数
 - [ ] 分组定义 `const` 类型声明和 `var` 逻辑类型声明
+
+#### 使用 `go fmt` 格式化
+
+社区使用官方的 Go 格式，不要重新发明轮子。
+尝试减少代码复杂度。 这将帮助所有人使代码易于阅读。
+
+#### 多个 if 语句可以折叠成 switch
+
+```go
+// NOT BAD
+if foo() {
+    // ...
+} else if bar == baz {
+    // ...
+} else {
+    // ...
+}
+
+// BETTER
+switch {
+case foo():
+    // ...
+case bar == baz:
+    // ...
+default:
+    // ...
+}
+```
+
+#### 用 `chan struct{}` 来传递信号, `chan bool` 表达的不够清楚
+
+当你在结构中看到 `chan bool` 的定义时，有时不容易理解如何使用该值，例如：
+
+```go
+type Service struct {
+    deleteCh chan bool // what does this bool mean? 
+}
+```
+
+但是我们可以将其改为明确的 `chan struct {}` 来使其更清楚：我们不在乎值（它始终是 `struct {}`），我们关心可能发生的事件，例如：
+
+```go
+type Service struct {
+    deleteCh chan struct{} // ok, if event than delete something.
+}
+```
+
+#### `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
+
+你不需要将无类型的 const 包装在类型中，编译器会找出来。最好将 const 移到第一位：
+
+```go
+// BAD
+delay := time.Second * 60 * 24 * 60
+
+// VERY BAD
+delay := 60 * time.Second * 60 * 24
+
+// GOOD
+delay := 24 * 60 * 60 * time.Second
+```
+
+#### 用 `time.Duration` 代替 `int64` + 变量名
+
+```go
+// BAD
+var delayMillis int64 = 15000
+
+// GOOD
+var delay time.Duration = 15 * time.Second
+```
+
+#### 按类型分组 `const` 声明，按逻辑和/或类型分组 `var`
+
+```go
+// BAD
+const (
+    foo = 1
+    bar = 2
+    message = "warn message"
+)
+
+// MOSTLY BAD
+const foo = 1
+const bar = 2
+const message = "warn message"
+
+// GOOD
+const (
+    foo = 1
+    bar = 2
+)
+
+const message = "warn message"
+```
+
+这个模式也适用于 `var`。
+
 - [ ] 每个阻塞或者 IO 函数操作应该是可取消的或者至少是可超时的
 - [ ] 为整型常量值实现 `Stringer` 接口
     - https://godoc.org/golang.org/x/tools/cmd/stringer
@@ -176,23 +318,22 @@ vs
     )
 ```
 
-- [ ] 用 `_ = b[7]` 为了早期检查以确保下面的写入安全
-  - https://stackoverflow.com/questions/38548911/is-it-necessary-to-early-bounds-check-to-guarantee-safety-of-writes-in-golang
-  - https://github.com/golang/go/blob/master/src/encoding/binary/binary.go#L82
-- [ ] 不要在你不拥有的结构上使用 `encoding/gob`
-  - 它不受新添加或重新排序字段的保护
-- [ ] 不要依赖求值顺序，尤其是在返回值的情况下
+#### 不要在你不拥有的结构上使用 `encoding/gob`
+
+在某些时候，结构可能会改变，而你可能会错过这一点。因此，这可能会导致很难找到 bug。
+
+#### 不要依赖于计算顺序，特别是在 return 语句中。
 
 ```go
-  // NOT CLEAR
+  // BAD
   return res, json.Unmarshal(b, &res)
 
-  // CLEAR
+  // GOOD
   err := json.Unmarshal(b, &res)
   return res, err
 ```
 
-- [ ] 为了防止结构比较，添加 `func` 类型的空字段
+#### 为了防止结构比较，添加 `func` 类型的空字段
 
 ```go
   type Point struct {
@@ -201,12 +342,23 @@ vs
   }
 ```
 
-- [ ] `http.HandlerFunc` 比 `http.Handler` 更好
-  - 用 `http.HandlerFunc` 你仅需要一个 func，`http.Handler` 需要一个类型。
-- [ ] 移动 `defer` 到顶部
-  - 代码可读性更好和在函数结束时有什么被调用也更清楚了。
-- [ ] JavaScript 解析整数为浮点数并且你的 int64 可能溢出
-  - 用 `json:"id,string"` 代替
+#### `http.HandlerFunc` 比 `http.Handler` 更好
+
+用 `http.HandlerFunc` 你仅需要一个 func，`http.Handler` 需要一个类型。
+
+#### 移动 `defer` 到顶部
+
+代码可读性更好和在函数结束时有什么被调用也更清楚了。
+
+#### JavaScript 解析整数为浮点数并且你的 int64 可能溢出
+
+用 `json:"id,string"` 代替
+
+```go
+type Request struct {
+  ID int64 `json:"id,string"`
+}
+```
 
 ### 并发 ###
 - [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
@@ -234,7 +386,9 @@ vs
   }
 ```
 
-- [ ] `time.Time` 有指针字段 `time.Location` 并且这对go GC不好
+#### 为了帮助编译器删除绑定检查，请参见此模式 `_ = b [7]`
+
+- [ ] `time.Time` 有指针字段 `time.Location` 并且这对 go GC 不好
     - 只在大量的`time.Time`才有意义，用 timestamp 代替
 - [ ] `regexp.MustCompile` 比 `regexp.Compile` 更好
     - 在大多数情况下，你的正则表达式是不可变的，所以你最好在 `func init` 中初始化它
@@ -380,6 +534,8 @@ vs
 - [ ] `GOGC=off go build ...` 应该会加快构建速度 [source](https://twitter.com/mvdan_/status/1107579946501853191)
 - [ ] 内存分析器每 512KB 记录一次分配。你能通过 `GODEBUG` 环境变量增加比例，来查看你的文件的更多详细信息。
   - 来源：https://twitter.com/bboreham/status/1105036740253937664
+
+- [ ] `go mod why -m <module>` 告诉我们为什么特定的模块是在 `go.mod` 文件中。
 
 ### Misc ###
 
