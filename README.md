@@ -92,14 +92,14 @@ default:
 
 #### To pass a signal prefer `chan struct{}` instead of `chan bool`.
 
-When you see a defenition of `chan bool` in a structure, sometimes it's not that easy to understand how this value will be used, example:
+When you see a definition of `chan bool` in a structure, sometimes it's not that easy to understand how this value will be used, example:
 ```go
 type Service struct {
     deleteCh chan bool // what does this bool mean? 
 }
 ```
 
-But we can make it more clear by changing it to `chan struct{}` which explicitly says: we do not care about value (it's always a `struct{}`), we care about an event that might occure, example:
+But we can make it more clear by changing it to `chan struct{}` which explicitly says: we do not care about value (it's always a `struct{}`), we care about an event that might occur, example:
 ```go
 type Service struct {
     deleteCh chan struct{} // ok, if event than delete something.
