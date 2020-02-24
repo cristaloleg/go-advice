@@ -314,6 +314,22 @@ err := json.Unmarshal(b, &res)
 return res, err
 ```
 
+#### To prevent unkeyed literals add `_ struct{}` field:
+
+```go
+type Point struct {
+	X, Y float64
+	_    struct{} // to prevent unkeyed literals
+}
+```
+
+For `Point{X: 1, Y: 1}` everything will be fine, but for `Point{1,1}` you will get a compile error:
+```
+./file.go:1:11: too few values in Point literal
+```
+
+There is a check in `go vet` command for this, there is no enough arguments to add `_ struct{}` in all your structs.
+
 #### To prevent structs comparison add an empty field of `func` type
 
 ```go
