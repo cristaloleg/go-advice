@@ -333,6 +333,23 @@ vs
   return res, err
 ```
 
+#### 为了防止 unkeyed 文字，添加 `_ struct {}` 字段：
+
+```go
+type Point struct {
+  X, Y float64
+  _    struct{} // to prevent unkeyed literals
+}
+```
+
+对于 `Point {X：1，Y：1}` 都可以，但是对于 `Point {1,1}` 则会出现编译错误：
+
+```
+./file.go:1:11: too few values in Point literal
+```
+
+使用 `go vet` 命令进行检查，提示没有足够的参数在所有结构中添加 `_ struct {}`。
+
 #### 为了防止结构比较，添加 `func` 类型的空字段
 
 ```go
