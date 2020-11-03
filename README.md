@@ -73,21 +73,21 @@ Try to reduce code entropy. This will help everyone to make code easy to read.
 ```go
 // NOT BAD
 if foo() {
-    // ...
+	// ...
 } else if bar == baz {
-    // ...
+	// ...
 } else {
-    // ...
+	// ...
 }
 
 // BETTER
 switch {
 case foo():
-    // ...
+	// ...
 case bar == baz:
-    // ...
+	// ...
 default:
-    // ...
+	// ...
 }
 ```
 
@@ -96,14 +96,14 @@ default:
 When you see a definition of `chan bool` in a structure, sometimes it's not that easy to understand how this value will be used, example:
 ```go
 type Service struct {
-    deleteCh chan bool // what does this bool mean? 
+	deleteCh chan bool // what does this bool mean? 
 }
 ```
 
 But we can make it more clear by changing it to `chan struct{}` which explicitly says: we do not care about value (it's always a `struct{}`), we care about an event that might occur, example:
 ```go
 type Service struct {
-    deleteCh chan struct{} // ok, if event than delete something.
+	deleteCh chan struct{} // ok, if event than delete something.
 }
 ```
 
@@ -119,6 +119,9 @@ delay := 60 * time.Second * 60 * 24
 
 // GOOD
 delay := 24 * 60 * 60 * time.Second
+
+// EVEN BETTER
+delay := 24 * time.Hour
 ```
 
 #### Use `time.Duration` instead of `int64` + variable name
@@ -136,9 +139,9 @@ var delay time.Duration = 15 * time.Second
 ```go
 // BAD
 const (
-    foo = 1
-    bar = 2
-    message = "warn message"
+	foo     = 1
+	bar     = 2
+	message = "warn message"
 )
 
 // MOSTLY BAD
@@ -148,8 +151,8 @@ const message = "warn message"
 
 // GOOD
 const (
-    foo = 1
-    bar = 2
+	foo = 1
+	bar = 2
 )
 
 const message = "warn message"
@@ -163,12 +166,12 @@ This pattern works for `var` too.
 - [ ] check your defer's error
 
 ```go
-  defer func() {
-      err := ocp.Close()
-      if err != nil {
-          rerr = err
-      }
-  }()
+defer func() {
+	err := ocp.Close()
+	if err != nil {
+		rerr = err
+	}
+}()
 ```
 
 - [ ] don't use `checkErr` function which panics or does `os.Exit`
@@ -177,16 +180,17 @@ This pattern works for `var` too.
   - https://play.golang.org/p/MGbeDwtXN3
 
 ```go
-  package main
-  type Status = int
-  type Format = int // remove `=` to have type safety
+package main
 
-  const A Status = 1
-  const B Format = 1
+type Status = int
+type Format = int // remove `=` to have type safety
 
-  func main() {
+const A Status = 1
+const B Format = 1
+
+func main() {
 	println(A == B)
-  }
+}
 ```
 
 - [ ] if you're going to omit returning params, do it explicitly
@@ -198,7 +202,7 @@ This pattern works for `var` too.
 - [ ] skip unused param with _
 
 ```go
-  func f(a int, _ string) {}
+func f(a int, _ string) {}
 ```
 
 - [ ] If you are comparing timestamps, use `time.Before` or `time.After`. Don't use `time.Sub` to get a duration and then check its value.
@@ -206,47 +210,49 @@ This pattern works for `var` too.
 - [ ] few params of the same type can be defined in a short way
 
 ```go
-  func f(a int, b int, s string, p string)
+func f(a int, b int, s string, p string)
 ```
 
 ```go
-  func f(a, b int, s, p string)
+func f(a, b int, s, p string)
 ```
 
 - [ ] the zero value of a slice is nil
   - https://play.golang.org/p/pNT0d_Bunq
-  ```go
-    var s []int
-    fmt.Println(s, len(s), cap(s))
-    if s == nil {
-      fmt.Println("nil!")
-    }
-    // Output:
-    // [] 0 0
-    // nil!
-  ```
+
+```go
+var s []int
+fmt.Println(s, len(s), cap(s))
+if s == nil {
+	fmt.Println("nil!")
+}
+// Output:
+// [] 0 0
+// nil!
+```
+
   - https://play.golang.org/p/meTInNyxtk
 
 ```go
-  var a []string
-  b := []string{}
+var a []string
+b := []string{}
 
-  fmt.Println(reflect.DeepEqual(a, []string{}))
-  fmt.Println(reflect.DeepEqual(b, []string{}))
-  // Output:
-  // false
-  // true
+fmt.Println(reflect.DeepEqual(a, []string{}))
+fmt.Println(reflect.DeepEqual(b, []string{}))
+// Output:
+// false
+// true
 ```
 
 - [ ] do not compare enum types with `<`, `>`, `<=` and `>=`
   - use explicit values, don't do this:
-
+  
 ```go
-  value := reflect.ValueOf(object)
-  kind := value.Kind()
-  if kind >= reflect.Chan && kind <= reflect.Slice {
-    // ...
-  }
+value := reflect.ValueOf(object)
+kind := value.Kind()
+if kind >= reflect.Chan && kind <= reflect.Slice {
+	// ...
+}
 ```
 
 - [ ] use `%+v` to print data with sufficient details
@@ -254,17 +260,17 @@ This pattern works for `var` too.
   - more: https://play.golang.org/p/9C0puRUstrP
 
 ```go
-  func f1() {
-    var a, b struct{}
-    print(&a, "\n", &b, "\n") // Prints same address
-    fmt.Println(&a == &b)     // Comparison returns false
-  }
+func f1() {
+	var a, b struct{}
+	print(&a, "\n", &b, "\n") // Prints same address
+	fmt.Println(&a == &b)     // Comparison returns false
+}
 
-  func f2() {
-    var a, b struct{}
-    fmt.Printf("%p\n%p\n", &a, &b) // Again, same address
-    fmt.Println(&a == &b)          // ...but the comparison returns true
-  }
+func f2() {
+	var a, b struct{}
+	fmt.Printf("%p\n%p\n", &a, &b) // Again, same address
+	fmt.Println(&a == &b)          // ...but the comparison returns true
+}
 ```
 
 - [ ] wrap errors with http://github.com/pkg/errors
@@ -283,20 +289,20 @@ This pattern works for `var` too.
   - https://play.golang.org/p/mZZdMaI92cI
 
 ```go
-  const (
-    _ = iota
-    testvar         // will be int
-  )
+const (
+	_ = iota
+	testvar // will be int
+)
 ```
 
   vs
 
 ```go
-  type myType int
-  const (
-    _ myType = iota
-    testvar         // will be myType
-  )
+type myType int
+const (
+	_ myType = iota
+	testvar // will be myType
+)
 ```
 
 #### Don’t use `encoding/gob` on structs you don’t own.
@@ -375,12 +381,12 @@ type Request struct {
 - [ ] filtering without allocating
 
 ```go
-    b := a[:0]
-    for _, x := range a {
-    	if f(x) {
-		    b = append(b, x)
-    	}
-    }
+b := a[:0]
+for _, x := range a {
+	if f(x) {
+		b = append(b, x)
+	}
+}
 ```
 
 #### To help compiler to remove bound checks see this pattern `_ = b[7]`
@@ -396,9 +402,9 @@ type Request struct {
   - HTTP client's Transport will not reuse connections unless the body is read to completion and closed
 
 ```go
-    res, _ := client.Do(req)
-    io.Copy(ioutil.Discard, res.Body)
-    defer res.Body.Close()
+res, _ := client.Do(req)
+io.Copy(ioutil.Discard, res.Body)
+defer res.Body.Close()
 ```
 
 - [ ] don't use defer in a loop or you'll get a small memory leak
@@ -406,15 +412,15 @@ type Request struct {
 - [ ] don't forget to stop ticker, unless you need a leaked channel
 
 ```go
-  ticker := time.NewTicker(1 * time.Second)
-  defer ticker.Stop()
+ticker := time.NewTicker(1 * time.Second)
+defer ticker.Stop()
 ```
 
 - [ ] use custom marshaler to speed up marshaling
   - but before using it - profile! ex: https://play.golang.org/p/SEm9Hvsi0r
 
 ```go
-  func (entry Entry) MarshalJSON() ([]byte, error) {
+func (entry Entry) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 	first := true
 	for key, value := range entry {
@@ -430,7 +436,7 @@ type Request struct {
 	}
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil
-  }
+}
 ```
 
 - [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
@@ -442,14 +448,14 @@ type Request struct {
   - source: https://go-review.googlesource.com/c/go/+/86976
 
 ```go
-  // noescape hides a pointer from escape analysis.  noescape is
-  // the identity function but escape analysis doesn't think the
-  // output depends on the input. noescape is inlined and currently
-  // compiles down to zero instructions.
-  func noescape(p unsafe.Pointer) unsafe.Pointer {
-  	x := uintptr(p)
-  	return unsafe.Pointer(x ^ 0)
-  }
+// noescape hides a pointer from escape analysis.  noescape is
+// the identity function but escape analysis doesn't think the
+// output depends on the input. noescape is inlined and currently
+// compiles down to zero instructions.
+func noescape(p unsafe.Pointer) unsafe.Pointer {
+	x := uintptr(p)
+	return unsafe.Pointer(x ^ 0)
+}
 ```
 
 - [ ] for fastest atomic swap you might use this
@@ -458,16 +464,17 @@ type Request struct {
   - to reduce number of syscalls
 - [ ] there are 2 ways to clear a map:
   - reuse map memory
+
 ```go
-	for k := range m {
-		delete(m, k)
-	}
+for k := range m {
+	delete(m, k)
+}
 ```
 
   - allocate new
 
 ```go
-	m = make(map[int]int)
+m = make(map[int]int)
 ```
 
 ### Modules
@@ -492,19 +499,19 @@ type Request struct {
 - [ ] `go test -short` allows to reduce set of tests to be runned
 
 ```go
-  func TestSomething(t *testing.T) {
-    if testing.Short() {
-      t.Skip("skipping test in short mode.")
-    }
-  }
+func TestSomething(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode.")
+	}
+}
 ```
 
 - [ ] skip test depending on architecture
 
 ```go
-  if runtime.GOARM == "arm" {
-    t.Skip("this doesn't work under ARM")
-  }
+if runtime.GOARM == "arm" {
+	t.Skip("this doesn't work under ARM")
+}
 ```
 
 - [ ] track your allocations with `testing.AllocsPerRun`
@@ -529,34 +536,36 @@ type Request struct {
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
 
 ```go
-  go func() {
-    sigs := make(chan os.Signal, 1)
-    signal.Notify(sigs, syscall.SIGQUIT)
-    buf := make([]byte, 1<<20)
-    for {
-      <-sigs
-      stacklen := runtime.Stack(buf, true)
-      log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
-    }
-  }()
+go func() {
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGQUIT)
+	buf := make([]byte, 1<<20)
+	for {
+		<-sigs
+		stacklen := runtime.Stack(buf, true)
+		log.Printf("=== received SIGQUIT ===\n*** goroutine dump...\n%s\n*** end\n", buf[:stacklen])
+	}
+}()
 ```
 
 - [ ] check interface implementation during compilation
-  ```go
-  var _ io.Reader = (*MyFastReader)(nil)
-  ```
+
+```go
+var _ io.Reader = (*MyFastReader)(nil)
+```
+
 - [ ] if a param of len is nil then it's zero
   - https://golang.org/pkg/builtin/#len
 - [ ] anonymous structs are cool
 
 ```go
-  var hits struct {
-    sync.Mutex
-    n int
-  }
-  hits.Lock()
-  hits.n++
-  hits.Unlock()
+var hits struct {
+	sync.Mutex
+	n int
+}
+hits.Lock()
+hits.n++
+hits.Unlock()
 ```
 
 - [ ] `httputil.DumpRequest` is very useful thing, don't create your own
