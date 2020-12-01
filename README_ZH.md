@@ -62,16 +62,6 @@ See more: https://the-zen-of-go.netlify.com/
 
 ### 代码 ###
 
-#### Always `go fmt` your code.
-
-- [ ] 使用 `go fmt` / `gofmt` 格式化你的代码, 让大家都开心
-- [ ] 多个 if 语句可以折叠成 switch
-- [ ] 用 `chan struct{}` 来传递信号, `chan bool` 表达的不够清楚
-- [ ] `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
-- [ ] 用 `var foo time.Duration` 代替 `var fooMillis int64` 会更好
-- [ ] 总是把 for-select 换成一个函数
-- [ ] 分组定义 `const` 类型声明和 `var` 逻辑类型声明
-
 #### 使用 `go fmt` 格式化
 
 社区使用官方的 Go 格式，不要重新发明轮子。
