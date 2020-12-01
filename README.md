@@ -442,8 +442,7 @@ func (entry Entry) MarshalJSON() ([]byte, error) {
 - [ ] `sync.Map` isn't a silver bullet, do not use it without a strong reasons
   - more: https://github.com/golang/go/blob/master/src/sync/map.go#L12
 - [ ] storing non-pointer values in `sync.Pool` allocates memory
-  - more: https://github.com/dominikh/go-tools/blob/master/cmd/staticcheck/docs/checks/SA6002
-
+  - more: https://staticcheck.io/docs/checks#SA6002
 - [ ] to hide a pointer from escape analysis you might carefully(!!!) use this func:
   - source: https://go-review.googlesource.com/c/go/+/86976
 
