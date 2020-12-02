@@ -22,23 +22,23 @@
 
 - 不要通过共享内存进行通信，通过通信共享内存
 - 并发不是并行
-- 通道编排；互斥体序列化
+- 管道用于协调；互斥量（锁）用于同步
 - 接口越大，抽象就越弱
-- 使零值有用
-- `interface{}` 什么也没说
+- 利用好零值
+- 空接口 `interface{}` 没有任何类型约束
 - Gofmt 的风格不是人们最喜欢的，但 gofmt 是每个人的最爱
-- 一点点复制比一点点依赖更好
+- 允许一点点重复比引入一点点依赖更好
 - 系统调用必须始终使用构建标记进行保护
 - 必须始终使用构建标记保护 Cgo
 - Cgo 不是 Go
-- 对于不安全的 package，没有任何保证
-- 清楚比聪明更好
+- 使用标准库的 `unsafe` 包，不能保证能如期运行
+- 清晰比聪明更好
 - 反射永远不清晰
-- 错误就是价值观
+- 错误是值
 - 不要只检查错误，还要优雅地处理它们
-- 设计架构，命名组件，记录细节
+- 设计架构，命名组件，（文档）记录细节
 - 文档是供用户使用的
-- 不要恐慌
+- 不要（在生产环境）使用 `panic()`
 
 Author: Rob Pike
 See more: https://go-proverbs.github.io/
@@ -48,13 +48,13 @@ See more: https://go-proverbs.github.io/
 - 每个 package 实现单一的目的
 - 显式处理错误
 - 尽早返回，而不是使用深嵌套
-- 让调用者选择并发
+- 让调用者处理并发（带来的问题）
 - 在启动一个 goroutine 时，需要知道何时它会停止
 - 避免 package 级别的状态
 - 简单很重要
 - 编写测试以锁定 package API 的行为
 - 如果你觉得慢，先编写 benchmark 来证明
-- 节制是一种美德
+- 适度是一种美德
 - 可维护性
 
 Author: Dave Cheney
@@ -62,19 +62,9 @@ See more: https://the-zen-of-go.netlify.com/
 
 ### 代码 ###
 
-#### Always `go fmt` your code.
-
-- [ ] 使用 `go fmt` / `gofmt` 格式化你的代码, 让大家都开心
-- [ ] 多个 if 语句可以折叠成 switch
-- [ ] 用 `chan struct{}` 来传递信号, `chan bool` 表达的不够清楚
-- [ ] `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
-- [ ] 用 `var foo time.Duration` 代替 `var fooMillis int64` 会更好
-- [ ] 总是把 for-select 换成一个函数
-- [ ] 分组定义 `const` 类型声明和 `var` 逻辑类型声明
-
 #### 使用 `go fmt` 格式化
 
-社区使用官方的 Go 格式，不要重新发明轮子。
+让团队一起使用官方的 Go 格式工具，不要重新发明轮子。
 尝试减少代码复杂度。 这将帮助所有人使代码易于阅读。
 
 #### 多个 if 语句可以折叠成 switch
@@ -120,7 +110,8 @@ type Service struct {
 
 #### `30 * time.Second` 比 `time.Duration(30) * time.Second` 更好
 
-你不需要将无类型的 const 包装在类型中，编译器会找出来。最好将 const 移到第一位：
+你不需要将无类型的常量包装成类型，编译器会找出来。  
+另外最好将常量移到第一位：
 
 ```go
 // BAD
@@ -172,7 +163,7 @@ const message = "warn message"
 - [ ] 每个阻塞或者 IO 函数操作应该是可取消的或者至少是可超时的
 - [ ] 为整型常量值实现 `Stringer` 接口
     - https://godoc.org/golang.org/x/tools/cmd/stringer
-- [ ] 用 defer 来检查你的错误
+- [ ] 检查 `defer` 中的错误
 
 ```go
   defer func() {
@@ -183,7 +174,7 @@ const message = "warn message"
   }()
 ```
 
-- [ ] 任何 panic 都不要使用 `checkErr` 函数或者用 `os.Exit`
+- [ ] 不要在 `checkErr` 函数中使用 `panic()` 或 `os.Exit()`
 - [ ] 仅仅在很特殊情况下才使用 panic, 你必须要去处理 error
 - [ ] 不要给枚举使用别名，因为这打破了类型安全
     - https://play.golang.org/p/MGbeDwtXN3
@@ -215,7 +206,7 @@ const message = "warn message"
 ```
 
 - [ ] 如果你要比较时间戳，请使用 `time.Before` 或 `time.After` ，不要使用 `time.Sub` 来获得 duration (持续时间)，然后检查它的值。
-- [ ] 总是将上下文作为第一个参数传递给具有 `ctx` 名称的 func
+- [ ] 带有上下文的函数第一个参数名为 `ctx`，形如：`func foo(ctx Context, ...)`
 - [ ] 几个相同类型的参数定义可以用简短的方式来进行
 
 ```go
@@ -333,7 +324,7 @@ vs
   return res, err
 ```
 
-#### 为了防止 unkeyed 文字，添加 `_ struct {}` 字段：
+#### 防止结构体字段用纯值方式初始化，添加 `_ struct {}` 字段：
 
 ```go
 type Point struct {
@@ -348,7 +339,7 @@ type Point struct {
 ./file.go:1:11: too few values in Point literal
 ```
 
-使用 `go vet` 命令进行检查，提示没有足够的参数在所有结构中添加 `_ struct {}`。
+当在你所有的结构体中添加了 `_ struct{}` 后，使用 `go vet` 命令进行检查，（原来声明的方式）就会提示没有足够的参数。
 
 #### 为了防止结构比较，添加 `func` 类型的空字段
 
@@ -365,7 +356,7 @@ type Point struct {
 
 #### 移动 `defer` 到顶部
 
-代码可读性更好和在函数结束时有什么被调用也更清楚了。
+这可以提高代码可读性并明确函数结束时调用了什么。
 
 #### JavaScript 解析整数为浮点数并且你的 int64 可能溢出
 
@@ -378,11 +369,11 @@ type Request struct {
 ```
 
 ### 并发 ###
-- [ ] 以线程安全的方式创建一些东西的最好选择是 `sync.Once`
+- [ ] 以线程安全的方式创建单例（只创建一次）的最好选择是 `sync.Once`
     - 不要用 flags, mutexes, channels or atomics
 - [ ] 永远不要使用 `select{}`, 省略通道， 等待信号
-- [ ] 不要在 channel 里关闭，这是它的创作者的责任。
-    - 往一个关闭的 channel 会引起 panic 
+- [ ] 不要关闭一个发送（写入）管道，应该由创建者关闭
+    - 往一个关闭的 channel 写数据会引起 panic
 - [ ] `math/rand` 中的 `func NewSource(seed int64) Source` 不是并发安全的，默认的 `lockedSource` 是并发安全的, see issue: https://github.com/golang/go/issues/3611
     - 更多: https://golang.org/pkg/math/rand/
 - [ ] 当你需要一个自定义类型的 atomic 值时，可以使用 [atomic.Value](https://godoc.org/sync/atomic#Value)
@@ -406,10 +397,10 @@ type Request struct {
 #### 为了帮助编译器删除绑定检查，请参见此模式 `_ = b [7]`
 
 - [ ] `time.Time` 有指针字段 `time.Location` 并且这对 go GC 不好
-    - 只在大量的`time.Time`才有意义，用 timestamp 代替
+    - 只有使用了大量的 `time.Time` 才（对性能）有意义，否则用 timestamp 代替
 - [ ] `regexp.MustCompile` 比 `regexp.Compile` 更好
     - 在大多数情况下，你的正则表达式是不可变的，所以你最好在 `func init` 中初始化它
-- [ ] 请勿在你的热路径中过度使用 `fmt.Sprintf`. 由于维护接口的缓冲池和动态调度，它是很昂贵的。
+- [ ] 请勿在你的热点代码中过度使用 `fmt.Sprintf`. 由于维护接口的缓冲池和动态调度，它是很昂贵的。
     - 如果你正在使用 `fmt.Sprintf("%s%s", var1, var2)`, 考虑使用简单的字符串连接。
     - 如果你正在使用 `fmt.Sprintf("%x", var)`, 考虑使用 `hex.EncodeToString` or `strconv.FormatInt(var, 16)`
 - [ ] 如果你不需要用它，可以考虑丢弃它，例如`io.Copy(ioutil.Discard, resp.Body)`
@@ -422,7 +413,7 @@ type Request struct {
 ```
 
 - [ ] 不要在循环中使用 defer，否则会导致内存泄露
-    - 'cause defers will grow your stack without the reason
+    - 因为这些 defer 会不断地填满你的栈（内存）
 - [ ] 不要忘记停止 ticker, 除非你需要泄露 channel
   
 ```go
@@ -554,7 +545,7 @@ type Request struct {
 
 - [ ] `go mod why -m <module>` 告诉我们为什么特定的模块是在 `go.mod` 文件中。
 
-### Misc ###
+### 其他 ###
 
 - [ ] dump goroutines https://stackoverflow.com/a/27398062/433041
 
@@ -598,5 +589,4 @@ type Request struct {
     - 添加这一行代码到 `bashrc`(或者其他类似的) `export CDPATH=$CDPATH:$GOPATH/src`
 
 - [ ] 从一个 slice 生成简单的随机元素
-
     - `[]string{"one", "two", "three"}[rand.Intn(3)]`
