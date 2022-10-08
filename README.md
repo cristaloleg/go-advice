@@ -273,8 +273,8 @@ func f2() {
 }
 ```
 
-- [ ] wrap errors with http://github.com/pkg/errors
-  - so: `errors.Wrap(err, "additional message to a given error")`
+- [ ] wrap errors with `fmt.Errorf`
+  - so: `fmt.Errorf("additional message to a given error: %w", err)`
 - [ ] be careful with `range` in Go:
   - `for i := range a` and `for i, v := range &a` doesn't make a copy of `a`
   - but `for i, v := range a` does
