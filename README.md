@@ -58,7 +58,7 @@ See more: https://go-proverbs.github.io/
 - Maintainability counts
 
 Author: Dave Cheney
-See more: https://the-zen-of-go.netlify.com/
+See more: [https://the-zen-of-go.netlify.com/](https://the-zen-of-go.netlify.app/)
 
 ### Code
 
